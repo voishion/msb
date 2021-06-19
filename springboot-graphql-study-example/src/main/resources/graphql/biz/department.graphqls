@@ -11,7 +11,7 @@ type Employee {
     position: String!
     salary: Int
     age: Int
-    department : Department
+    department: Department
 }
 
 "部分"

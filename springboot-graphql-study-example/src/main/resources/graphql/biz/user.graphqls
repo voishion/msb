@@ -45,11 +45,11 @@ type User {
 "用户分页"
 type UserPage implements Page {
     "当前页码"
-    number:Int!
+    number: Int!
     "总数据量"
-    totalElements:Int!
+    totalElements: Int!
     "总页数"
-    totalPages:Int!
+    totalPages: Int!
     "内容"
     content: [User]
 }

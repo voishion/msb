@@ -1,8 +1,6 @@
 package com.meishubao.graphqlstudy.user.controller;
 
 import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.util.PageUtil;
-import com.meishubao.graphqlstudy.common.response.Page;
 import com.meishubao.graphqlstudy.user.entity.User;
 import com.meishubao.graphqlstudy.user.service.UserService;
 import com.meishubao.graphqlstudy.user.vo.UserPage;

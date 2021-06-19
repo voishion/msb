@@ -24,9 +24,9 @@ type Result {
 "分页接口"
 interface Page {
     "当前页码"
-    number:Int!
+    number: Int!
     "总数据量"
-    totalElements:Int!
+    totalElements: Int!
     "总页数"
-    totalPages:Int!
+    totalPages: Int!
 }
