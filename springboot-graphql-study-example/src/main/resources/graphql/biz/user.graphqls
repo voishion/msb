@@ -1,14 +1,25 @@
 extend type Query {
+    "根据昵称获取用户"
     user(nickname: String!): User
+
+    "获取用户列表"
     users: [User]
 }
 extend type Mutation {
+    "添加用户"
     addUser(mail: String!, nickname: String!, password: String!, description: String): Result
+
+    "删除用户"
     deleteUser(id: String!): Result
+
+    "更新用户"
     updateUser(id: String!, mail: String!, nickname: String!, description: String): User
+
+    "通过实体类添加用户"
     addUserByInput(input: AddUserInput): User
 }
 
+"用户表"
 type User {
     "编号"
     id: String!
@@ -28,6 +39,7 @@ type User {
     bike: Bike
 }
 
+"轿车"
 type Car {
     "编号"
     id: ID!
@@ -37,6 +49,7 @@ type Car {
     color: String
 }
 
+"自行车"
 type Bike {
     "编号"
     id: ID!
@@ -46,6 +59,7 @@ type Bike {
     color: String
 }
 
+"添加用户输入DTO"
 input AddUserInput {
     "邮箱"
     mail: String!

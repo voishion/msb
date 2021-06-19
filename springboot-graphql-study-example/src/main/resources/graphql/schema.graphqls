@@ -1,8 +1,11 @@
+"查询"
 type Query {
 }
+"变动"
 type Mutation {
 }
 
+"性别枚举"
 enum Sex {
     "男性"
     MALE,
@@ -10,6 +13,7 @@ enum Sex {
     FEMALE
 }
 
+"返回结果"
 type Result {
     "错误码"
     code: Int!
