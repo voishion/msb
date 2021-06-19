@@ -1,0 +1,58 @@
+extend type Query {
+    user(nickname: String!): User
+    users: [User]
+}
+extend type Mutation {
+    addUser(mail: String!, nickname: String!, password: String!, description: String): Result
+    deleteUser(id: String!): Result
+    updateUser(id: String!, mail: String!, nickname: String!, description: String): User
+    addUserByInput(input: AddUserInput): User
+}
+
+type User {
+    "编号"
+    id: String!
+    "性别"
+    sex: Sex!
+    "邮箱"
+    mail: String!
+    "昵称"
+    nickname: String!
+    "密码"
+    password: String!
+    "描述"
+    description: String
+    "车"
+    car: Car
+    "自行车"
+    bike: Bike
+}
+
+type Car {
+    "编号"
+    id: ID!
+    "名字"
+    name: String!
+    "颜色"
+    color: String
+}
+
+type Bike {
+    "编号"
+    id: ID!
+    "名字"
+    name: String!
+    "颜色"
+    color: String
+}
+
+input AddUserInput {
+    "邮箱"
+    mail: String!
+    "昵称"
+    nickname: String!
+    "密码"
+    password: String!
+    "描述"
+    description: String
+}

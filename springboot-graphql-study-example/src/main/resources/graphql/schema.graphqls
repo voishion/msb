@@ -1,0 +1,18 @@
+type Query {
+}
+type Mutation {
+}
+
+enum Sex {
+    "男性"
+    MALE,
+    "女性"
+    FEMALE
+}
+
+type Result {
+    "错误码"
+    code: Int!
+    "错误消息"
+    msg: String
+}
