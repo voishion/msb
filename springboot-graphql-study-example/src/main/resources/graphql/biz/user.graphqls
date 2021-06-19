@@ -4,6 +4,9 @@ extend type Query {
 
     "获取用户列表"
     users: [User]
+
+    "分页查询用户信息"
+    userPage(query: String!, page: Int!, size: Int!): UserPage
 }
 extend type Mutation {
     "添加用户"
@@ -19,7 +22,7 @@ extend type Mutation {
     addUserByInput(input: AddUserInput): User
 }
 
-"用户表"
+"用户"
 type User {
     "编号"
     id: String!
@@ -37,6 +40,18 @@ type User {
     car: Car
     "自行车"
     bike: Bike
+}
+
+"用户分页"
+type UserPage implements Page {
+    "当前页码"
+    number:Int!
+    "总数据量"
+    totalElements:Int!
+    "总页数"
+    totalPages:Int!
+    "内容"
+    content: [User]
 }
 
 "轿车"
