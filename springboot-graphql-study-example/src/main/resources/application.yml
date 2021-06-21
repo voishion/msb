@@ -2,7 +2,6 @@
 graphql:
   servlet:
     mapping: /graphql
-    # if you want to @ExceptionHandler annotation for custom GraphQLErrors
     exception-handlers-enabled: true
     context-setting: per_request_with_instrumentation
   tools:
@@ -17,9 +16,6 @@ graphiql:
     enabled: true
     version: 0.11.11
   props:
-#    resources:
-#      query: "**/*.graphqls"
-#      variables: "**/*.graphqls"
     variables:
       editor-theme: "solarized light"
   headers:
