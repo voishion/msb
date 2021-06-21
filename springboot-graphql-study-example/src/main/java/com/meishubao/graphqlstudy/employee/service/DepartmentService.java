@@ -21,12 +21,13 @@ public class DepartmentService {
         return Department.builder().id(departmentId).name("研发部" + departmentId).organizationId(45275966 + departmentId).build();
     }
 
-    public List<Department> list(Set<Integer> keys) {
-        log.info("list:{}", keys);
+    public List<Department> list(Set<Integer> departmentIds) {
+        // SELECT * FROM `department` WHERE `id` IN (1, 2, 3, ..., N)
+        log.info("list:{}", departmentIds);
         List<Department> list = Lists.newArrayList();
-        if (CollUtil.isNotEmpty(keys)) {
-            for (Integer key : keys) {
-                list.add(this.get(key));
+        if (CollUtil.isNotEmpty(departmentIds)) {
+            for (Integer departmentId : departmentIds) {
+                list.add(this.get(departmentId));
             }
         }
         return list;
