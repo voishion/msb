@@ -6,6 +6,7 @@ graphql:
     context-setting: per_request_with_instrumentation
   tools:
     schema-location-pattern: "**/*.graphqls"
+  extended-scalars: BigDecimal
 #GraphiQL Tool
 graphiql:
   mapping: /graphiql

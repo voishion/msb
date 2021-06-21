@@ -1,9 +1,24 @@
+#
+# Schemas must have at least a query root type
+#
+schema {
+    query: Query
+    subscription : Subscription
+    mutation: Mutation
+}
+
 "查询"
 type Query {
+}
+"订阅"
+type Subscription {
 }
 "变动"
 type Mutation {
 }
+
+"自定义标量类型:BigDecimal"
+scalar BigDecimal
 
 "性别枚举"
 enum Sex {

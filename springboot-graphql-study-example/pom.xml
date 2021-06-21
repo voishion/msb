@@ -8,19 +8,38 @@
         <version>2.5.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.meishubao</groupId>
     <artifactId>springboot-graphql-study-example</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <name>springboot-graphql-study-example</name>
     <description>springboot graphql study example</description>
+
     <properties>
         <java.version>1.8</java.version>
-        <graphql-java-kickstart.version>11.0.0</graphql-java-kickstart.version>
+        <graphql-java-kickstart.version>11.1.0</graphql-java-kickstart.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.graphql-java-kickstart</groupId>
+                <artifactId>graphql-spring-boot-dependencies</artifactId>
+                <version>${graphql-java-kickstart.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -37,18 +56,23 @@
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-spring-boot-starter</artifactId>
-            <version>${graphql-java-kickstart.version}</version>
         </dependency>
         <!-- GraphiQL tool -->
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphql-java-tools</artifactId>
-            <version>${graphql-java-kickstart.version}</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-java-kickstart</groupId>
             <artifactId>graphiql-spring-boot-starter</artifactId>
-            <version>${graphql-java-kickstart.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.reactivex.rxjava2</groupId>
+            <artifactId>rxjava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
         </dependency>
 
         <!-- hutool -->
