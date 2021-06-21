@@ -23,10 +23,20 @@ type Result {
 
 "分页接口"
 interface Page {
+    "是否为空"
+    empty: Boolean
+    "第一页"
+    first: Boolean
+    "最后一页"
+    last: Boolean
     "当前页码"
-    number: Int!
+    number: Int
+    "当前页数据量"
+    numberOfElements: Int
+    "每页显示数据量"
+    size: Int
     "总数据量"
-    totalElements: Int!
+    totalElements: Int
     "总页数"
-    totalPages: Int!
+    totalPages: Int
 }

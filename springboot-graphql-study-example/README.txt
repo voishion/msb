@@ -87,6 +87,22 @@ query {
     }
   }
 }
+// 分页查询
+query {
+  userPage(query:"", page: 1, size: 9) {
+    empty
+    first
+    last
+    number
+    numberOfElements
+    size
+    totalElements
+    totalPages
+    content{
+      id
+    }
+  }
+}
 // 添加数据
 mutation {
     addUser(mail:"11", nickname: "testuser", password: "111", description: "test") {

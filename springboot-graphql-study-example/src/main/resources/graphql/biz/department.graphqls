@@ -12,6 +12,7 @@ type Employee {
     salary: Int
     age: Int
     department: Department
+    realName: String
 }
 
 "部分"

@@ -1,9 +1,9 @@
 package com.meishubao.graphqlstudy.user.controller;
 
 import cn.hutool.core.collection.ListUtil;
+import com.meishubao.graphqlstudy.common.response.Page;
 import com.meishubao.graphqlstudy.user.entity.User;
 import com.meishubao.graphqlstudy.user.service.UserService;
-import com.meishubao.graphqlstudy.user.vo.UserPage;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +32,8 @@ public class UserQueryController implements GraphQLQueryResolver {
         return userService.listUsers();
     }
 
-    public UserPage userPage(String query, Integer page, Integer size) {
-        List<User> users = this.userService.listUsers();
-        return new UserPage().build(page, size, users.size(), ListUtil.page(page - 1, size, users));
+    public Page<User> userPage(String query, Integer page, Integer size) {
+        return Page.build(page, size, this.userService.listUsers());
     }
 
 }

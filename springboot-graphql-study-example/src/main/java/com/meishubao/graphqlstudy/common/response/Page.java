@@ -1,5 +1,9 @@
 package com.meishubao.graphqlstudy.common.response;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.PageUtil;
+import graphql.com.google.common.collect.Lists;
 import lombok.Data;
 
 import java.util.List;
@@ -8,41 +12,71 @@ import java.util.List;
  * @author lilu
  */
 @Data
-public abstract class Page {
+public class Page<T> {
+    /**
+     * 是否为空
+     **/
+    boolean empty;
+    /**
+     * 第一页
+     */
+    boolean first;
+    /**
+     * 最后一页
+     */
+    boolean last;
     /**
      * 当前页码
      **/
-    Integer number;
+    long number;
+    /**
+     * 当前页数据量
+     **/
+    long numberOfElements;
+    /**
+     * 每页显示数据量
+     **/
+    long size;
     /**
      * 总数据量
      **/
-    Integer totalElements;
+    long totalElements;
     /**
      * 总页数
      **/
-    Integer totalPages;
+    long totalPages;
+    /**
+     * 内容
+     **/
+    List<T> content;
 
     /**
-     * 填充数据
+     * 内存分页实现
      *
-     * @param number
-     * @param totalElements
-     * @param totalPages
-     */
-    protected void fill(Integer number, Integer totalElements, Integer totalPages) {
-        this.number = number;
-        this.totalElements = totalElements;
-        this.totalPages = totalPages;
-    }
-
-    /**
-     * 构建分页信息
-     *
-     * @param number        当前页码
-     * @param size          显示数据量
-     * @param totalElements 总数据量
-     * @param content       数据内容
+     * @param pageNo   当前页码，从1开始
+     * @param pageSize 页数据量
+     * @param list     数据列表
+     * @param <T>
      * @return
      */
-    public abstract Page build(Integer number, Integer size, Integer totalElements, List<?> content);
+    public static <T> Page<T> build(int pageNo, int pageSize, List<T> list) {
+        List<T> content = ListUtil.page(pageNo - 1, pageSize, list);
+        if (CollUtil.isEmpty(content)) {
+            content = Lists.newArrayList();
+        }
+
+        Page<T> page = new Page<T>();
+        page.setContent(content);
+        page.setNumber(pageNo);
+        page.setNumberOfElements(content.size());
+        page.setSize(pageSize);
+        page.setTotalElements(list.size());
+        page.setTotalPages(PageUtil.totalPage(list.size(), pageSize));
+        page.setEmpty(CollUtil.isEmpty(content));
+        page.setFirst(1 == page.getNumber());
+        page.setLast(page.getTotalPages() == page.getNumber());
+
+        return page;
+    }
+
 }
