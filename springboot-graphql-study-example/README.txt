@@ -61,6 +61,20 @@ query {
     }
   }
 }
+// 员工查询(属性查询包含参数)
+query {
+  userPage(query: "", page: 1, size: 2) {
+    number
+    numberOfElements
+    size
+    totalElements
+    totalPages
+    content{
+      id
+      house_list(query: "嗯嗯你好")
+    }
+  }
+}
 // 按列表查询
 query {
   users {

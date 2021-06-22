@@ -40,6 +40,8 @@ type User {
     car: Car
     "自行车"
     bike: Bike
+    "房子列表"
+    house_list(query: String): [String]
 }
 
 "用户分页"

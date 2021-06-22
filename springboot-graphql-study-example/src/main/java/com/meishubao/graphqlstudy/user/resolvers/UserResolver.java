@@ -1,14 +1,17 @@
 package com.meishubao.graphqlstudy.user.resolvers;
 
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 import com.meishubao.graphqlstudy.user.entity.Bike;
 import com.meishubao.graphqlstudy.user.entity.Car;
 import com.meishubao.graphqlstudy.user.entity.User;
+import graphql.com.google.common.collect.Lists;
 import graphql.kickstart.tools.GraphQLResolver;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +34,14 @@ public class UserResolver implements GraphQLResolver<User> {
             log.info("{}:{}", entry.getKey(), entry.getValue());
         }
         return Bike.builder().id("BX 110").name(user.getNickname() + "的闪电③").color("黑色").build();
+    }
+
+    public List<String> getHouseList(User user, String query, DataFetchingEnvironment environment) {
+        List<String> houseList = Lists.newArrayList();
+        for (int i = 1; i <= 5; i++) {
+            houseList.add(StrUtil.format("{}'s House {}", user.getNickname(), i));
+        }
+        return houseList;
     }
 
 }
