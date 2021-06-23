@@ -68,6 +68,10 @@ public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListen
 
     private ApplicationContext applicationContext;
 
+    private EventLoopGroup bossGroup;
+
+    private EventLoopGroup workerGroup;
+
     private Channel serverChannel;
 
     @Override
@@ -80,8 +84,8 @@ public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListen
         if (!enable) {
             return;
         }
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        bossGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup();
 
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup);
@@ -122,13 +126,18 @@ public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListen
         Channel channel = serverBootstrap.bind().sync().channel();
         this.serverChannel = channel;
         log.info("WebSocket 服务启动，ip={},port={}", this.ip, this.port);
-        // channel.closeFuture().sync();
     }
 
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
         if (!enable) {
             return;
+        }
+        if (this.bossGroup != null) {
+            this.bossGroup.shutdownGracefully();
+        }
+        if (this.workerGroup != null) {
+            this.workerGroup.shutdownGracefully();
         }
         if (this.serverChannel != null) {
             this.serverChannel.close();
