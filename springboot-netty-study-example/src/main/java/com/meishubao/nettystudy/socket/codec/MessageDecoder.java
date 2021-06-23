@@ -26,13 +26,11 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
         if (in == null) {
             return null;
         }
-
         if (in.readableBytes() <= HEADER_SIZE) {
             return null;
         }
 
         in.markReaderIndex();
-
         // 1
         byte magic = in.readByte();
         // 1
@@ -41,7 +39,6 @@ public class MessageDecoder extends LengthFieldBasedFrameDecoder {
         long requestId = in.readLong();
         // 4
         int dataLength = in.readInt();
-
         // FIXME 如果dataLength过大，可能导致问题
         if (in.readableBytes() < dataLength) {
             in.resetReaderIndex();
