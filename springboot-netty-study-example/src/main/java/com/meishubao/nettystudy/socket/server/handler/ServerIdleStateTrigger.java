@@ -1,4 +1,4 @@
-package com.meishubao.nettystudy.socket.handler;
+package com.meishubao.nettystudy.socket.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

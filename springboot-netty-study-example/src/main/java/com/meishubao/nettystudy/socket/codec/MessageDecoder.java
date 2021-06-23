@@ -1,4 +1,4 @@
-package com.meishubao.nettystudy.socket.handler.codec;
+package com.meishubao.nettystudy.socket.codec;
 
 import com.meishubao.nettystudy.socket.bean.Message;
 import io.netty.buffer.ByteBuf;

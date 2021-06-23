@@ -1,4 +1,4 @@
-package com.meishubao.nettystudy.socket.handler;
+package com.meishubao.nettystudy.socket.server.handler;
 
 import com.meishubao.nettystudy.service.DiscardService;
 import com.meishubao.nettystudy.socket.bean.Message;

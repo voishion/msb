@@ -1,9 +1,9 @@
-package com.meishubao.nettystudy.socket.runner;
+package com.meishubao.nettystudy.socket.server;
 
-import com.meishubao.nettystudy.socket.handler.ServerIdleStateTrigger;
-import com.meishubao.nettystudy.socket.handler.SocketServerMessageHandler;
-import com.meishubao.nettystudy.socket.handler.codec.MessageDecoder;
-import com.meishubao.nettystudy.socket.handler.codec.MessageEncoder;
+import com.meishubao.nettystudy.socket.server.handler.ServerIdleStateTrigger;
+import com.meishubao.nettystudy.socket.server.handler.SocketServerMessageHandler;
+import com.meishubao.nettystudy.socket.codec.MessageDecoder;
+import com.meishubao.nettystudy.socket.codec.MessageEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

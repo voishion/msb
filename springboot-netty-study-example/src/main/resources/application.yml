@@ -21,7 +21,7 @@ netty:
     ip: 0.0.0.0
   websocket:
     # 开启WebSocket服务
-    enable: false
+    enable: true
     # WebSocket服务端口
     port: 1024
     # 绑定的网卡

@@ -1,8 +1,8 @@
 package com.meishubao.nettystudy.socket.client.handler;
 
 import com.meishubao.nettystudy.socket.client.TcpClient;
-import com.meishubao.nettystudy.socket.handler.codec.MessageDecoder;
-import com.meishubao.nettystudy.socket.handler.codec.MessageEncoder;
+import com.meishubao.nettystudy.socket.codec.MessageDecoder;
+import com.meishubao.nettystudy.socket.codec.MessageEncoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
