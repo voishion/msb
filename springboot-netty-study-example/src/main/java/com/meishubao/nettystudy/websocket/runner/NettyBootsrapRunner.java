@@ -51,6 +51,9 @@ public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListen
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyBootsrapRunner.class);
 
+    @Value("${netty.websocket.enable:false}")
+    private boolean enable;
+
     @Value("${netty.websocket.port}")
     private int port;
 
@@ -63,12 +66,7 @@ public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListen
     @Value("${netty.websocket.max-frame-size}")
     private long maxFrameSize;
 
-
     private ApplicationContext applicationContext;
-
-    private final EventLoopGroup bossGroup = new NioEventLoopGroup();
-
-    private final EventLoopGroup workerGroup = new NioEventLoopGroup();
 
     private Channel serverChannel;
 
@@ -79,6 +77,12 @@ public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListen
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        if (!enable) {
+            return;
+        }
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup);
         serverBootstrap.channel(NioServerSocketChannel.class);
@@ -117,16 +121,19 @@ public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListen
         });
         Channel channel = serverBootstrap.bind().sync().channel();
         this.serverChannel = channel;
-        log.info("websocket 服务启动，ip={},port={}", this.ip, this.port);
+        log.info("WebSocket 服务启动，ip={},port={}", this.ip, this.port);
         // channel.closeFuture().sync();
     }
 
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
+        if (!enable) {
+            return;
+        }
         if (this.serverChannel != null) {
             this.serverChannel.close();
         }
-        log.info("websocket 服务停止");
+        log.info("WebSocket 服务停止");
     }
 
 }
