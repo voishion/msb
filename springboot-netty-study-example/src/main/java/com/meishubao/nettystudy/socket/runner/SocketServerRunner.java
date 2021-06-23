@@ -1,15 +1,15 @@
-package com.meishubao.nettystudy.websocket.runner;
+package com.meishubao.nettystudy.socket.runner;
 
-import com.meishubao.nettystudy.websocket.handler.WebSocketMessageHandler;
+import com.meishubao.nettystudy.socket.handler.ServerIdleStateTrigger;
+import com.meishubao.nettystudy.socket.handler.SocketServerMessageHandler;
+import com.meishubao.nettystudy.socket.handler.codec.MessageDecoder;
+import com.meishubao.nettystudy.socket.handler.codec.MessageEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.*;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
-import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
-import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,22 +30,16 @@ import java.net.InetSocketAddress;
  */
 @Slf4j
 @Component
-public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListener<ContextClosedEvent>, ApplicationContextAware {
+public class SocketServerRunner implements ApplicationRunner, ApplicationListener<ContextClosedEvent>, ApplicationContextAware {
 
-    @Value("${netty.websocket.enable:false}")
+    @Value("${netty.socket.enable:false}")
     private boolean enable;
 
-    @Value("${netty.websocket.port}")
+    @Value("${netty.socket.port}")
     private int port;
 
-    @Value("${netty.websocket.ip}")
+    @Value("${netty.socket.ip}")
     private String ip;
-
-    @Value("${netty.websocket.path}")
-    private String path;
-
-    @Value("${netty.websocket.max-frame-size}")
-    private long maxFrameSize;
 
     private ApplicationContext applicationContext;
 
@@ -71,42 +65,27 @@ public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListen
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup);
         serverBootstrap.channel(NioServerSocketChannel.class);
+        serverBootstrap.option(ChannelOption.SO_BACKLOG, 128);
         serverBootstrap.localAddress(new InetSocketAddress(this.ip, this.port));
         serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel socketChannel) throws Exception {
                 ChannelPipeline pipeline = socketChannel.pipeline();
-                pipeline.addLast(new HttpServerCodec());
-                pipeline.addLast(new ChunkedWriteHandler());
-                pipeline.addLast(new HttpObjectAggregator(65536));
-                pipeline.addLast(new ChannelInboundHandlerAdapter() {
-                    @Override
-                    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                        if(msg instanceof FullHttpRequest) {
-                            FullHttpRequest fullHttpRequest = (FullHttpRequest) msg;
-                            String uri = fullHttpRequest.uri();
-                            if (!uri.equals(path)) {
-                                // 访问的路径不是 websocket的端点地址，响应404
-                                ctx.channel().writeAndFlush(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND))
-                                        .addListener(ChannelFutureListener.CLOSE);
-                                return;
-                            }
-                        }
-                        super.channelRead(ctx, msg);
-                    }
-                });
-                pipeline.addLast(new WebSocketServerCompressionHandler());
-                pipeline.addLast(new WebSocketServerProtocolHandler(path, null, true, maxFrameSize));
 
+                pipeline.addLast(new IdleStateHandler(30, 0, 0));
+                pipeline.addLast(new ServerIdleStateTrigger());
+
+                pipeline.addLast(new MessageDecoder(1 << 20, 10, 4));
+                pipeline.addLast(new MessageEncoder());
                 /**
                  * 从IOC中获取到Handler
                  */
-                pipeline.addLast(applicationContext.getBean(WebSocketMessageHandler.class));
+                pipeline.addLast("socketServerMessageHandler", applicationContext.getBean(SocketServerMessageHandler.class));
             }
         });
         Channel channel = serverBootstrap.bind().sync().channel();
         this.serverChannel = channel;
-        log.info("WebSocket 服务启动，ip={},port={}", this.ip, this.port);
+        log.info("Socket 服务启动，ip={},port={}", this.ip, this.port);
     }
 
     @Override
@@ -123,7 +102,7 @@ public class NettyBootsrapRunner implements ApplicationRunner, ApplicationListen
         if (this.serverChannel != null) {
             this.serverChannel.close();
         }
-        log.info("WebSocket 服务停止");
+        log.info("Socket 服务停止");
     }
 
 }

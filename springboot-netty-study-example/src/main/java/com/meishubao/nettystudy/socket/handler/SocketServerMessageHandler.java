@@ -1,15 +1,12 @@
-package com.meishubao.nettystudy.websocket.handler;
+package com.meishubao.nettystudy.socket.handler;
 
 import com.meishubao.nettystudy.service.DiscardService;
-import io.netty.channel.ChannelFutureListener;
+import com.meishubao.nettystudy.socket.bean.Message;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketCloseStatus;
-import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Sharable
 @Component
-public class WebSocketMessageHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
+public class SocketServerMessageHandler extends SimpleChannelInboundHandler<Message> {
 
     /** 用于记录和管理所有客户端的channel **/
     private static ChannelGroup clients= new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -30,18 +27,12 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<WebSock
     DiscardService discardService;
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) throws Exception {
-        if (msg instanceof TextWebSocketFrame) {
-            TextWebSocketFrame textWebSocketFrame = (TextWebSocketFrame) msg;
-            // 业务层处理数据
-            String message = textWebSocketFrame.text();
-            this.discardService.discard(message);
-            // 响应客户端
-            ctx.channel().writeAndFlush(new TextWebSocketFrame(String.format("我在%s收到了你的消息：%s", System.currentTimeMillis(), message)));
-        } else {
-            // 不接受文本以外的数据帧类型
-            ctx.channel().writeAndFlush(WebSocketCloseStatus.INVALID_MESSAGE_TYPE).addListener(ChannelFutureListener.CLOSE);
-        }
+    protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
+        // 业务层处理数据
+        this.discardService.discard(msg);
+        // 响应客户端
+        Message resp = new Message(msg.getMagicType(), msg.getType(), msg.getRequestId(), String.format("我在%s收到了你的消息：%s", System.currentTimeMillis(), msg.getBody()));
+        ctx.channel().writeAndFlush(resp);
     }
 
     /**
@@ -70,4 +61,11 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<WebSock
         log.info("客户端断开，channel对应的短id为：{}，长id为：{}，clients size：{}",
                 ctx.channel().id().asShortText(), ctx.channel().id().asLongText(), clients.size());
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        ctx.close();
+        log.error(cause.getMessage(), cause);
+    }
+
 }

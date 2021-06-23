@@ -12,10 +12,16 @@ management:
       enabled: true
 
 netty:
-  socket: sd
+  socket:
+    # 开启Socket服务
+    enable: true
+    # WebSocket服务端口
+    port: 1989
+    # 绑定的网卡
+    ip: 0.0.0.0
   websocket:
     # 开启WebSocket服务
-    enable: true
+    enable: false
     # WebSocket服务端口
     port: 1024
     # 绑定的网卡
