@@ -39,24 +39,6 @@ public class TcpClient {
         init();
     }
 
-    /**
-     * 向远程TCP服务器请求连接
-     */
-    public void connect() {
-        synchronized (bootstrap) {
-            try {
-                ChannelFuture future = bootstrap.connect(host, port).sync();
-                future.addListener(getConnectionListener());
-                future.awaitUninterruptibly(2000, TimeUnit.MILLISECONDS);
-                if (future.channel().isActive()) {
-                    this.channel = future.channel();
-                }
-            } catch (InterruptedException e) {
-                log.error(e.getMessage(), e);
-            }
-        }
-    }
-
     public RetryPolicy getRetryPolicy() {
         return retryPolicy;
     }
@@ -71,15 +53,29 @@ public class TcpClient {
                 .handler(new ClientHandlersInitializer(TcpClient.this));
     }
 
-    private ChannelFutureListener getConnectionListener() {
-        return new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture future) throws Exception {
-                if (!future.isSuccess()) {
-                    future.channel().pipeline().fireChannelInactive();
+    /**
+     * 向远程TCP服务器请求连接
+     */
+    public void connect() {
+        synchronized (bootstrap) {
+            try {
+                ChannelFuture future = bootstrap.connect(host, port).sync();
+                future.addListener(new ChannelFutureListener() {
+                    @Override
+                    public void operationComplete(ChannelFuture future) throws Exception {
+                        if (!future.isSuccess()) {
+                            future.channel().pipeline().fireChannelInactive();
+                        }
+                    }
+                });
+                future.awaitUninterruptibly(2000, TimeUnit.MILLISECONDS);
+                if (future.channel().isActive()) {
+                    this.channel = future.channel();
                 }
+            } catch (InterruptedException e) {
+                log.error(e.getMessage(), e);
             }
-        };
+        }
     }
 
     public static void main(String[] args) throws InterruptedException {
