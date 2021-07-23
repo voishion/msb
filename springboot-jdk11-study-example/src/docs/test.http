@@ -1,0 +1,16 @@
+### 测试1
+POST http://localhost:8080/v1/t/test01
+Content-Type: application/json
+
+{
+  "id": 1,
+  "price": 23.56,
+  "ts": 1627028846735,
+  "value": "content"
+}
+
+### Send POST request with body as parameters
+POST https://httpbin.org/post
+Content-Type: application/x-www-form-urlencoded
+
+id=999&value=content
