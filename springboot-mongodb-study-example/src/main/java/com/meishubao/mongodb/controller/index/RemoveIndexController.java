@@ -22,11 +22,6 @@ public class RemoveIndexController {
     @Autowired
     private RemoveIndexService removeIndexService;
 
-    /**
-     * 设置集合名称
-     */
-    private static final String COLLECTION_NAME = "users";
-
     @ApiOperation("根据索引名称移除索引")
     @PostMapping(value = "/removeIndex")
     public boolean removeIndex(@RequestParam(defaultValue = "name_1") String indexName) {

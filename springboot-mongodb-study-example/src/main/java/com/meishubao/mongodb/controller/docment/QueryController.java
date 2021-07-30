@@ -21,11 +21,6 @@ public class QueryController {
     @Autowired
     private QueryService queryService;
 
-    /**
-     * 查询集合中的【全部】文档数据
-     *
-     * @return 全部文档列表
-     */
     @ApiOperation("查询集合中的【全部】文档数据")
     @PostMapping(value = "/findAll")
     public Object findAll() {
