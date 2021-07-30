@@ -30,7 +30,7 @@ public class AggregatePipelineController {
     @ApiOperation("使用 $group 和 $sort 聚合,先使用 $group 进行分组，然后再使用 $sort 排序")
     @PostMapping(value = "/aggregateGroupSort")
     public Object aggregateGroupSort() {
-        return aggregatePipelineService.aggregateGroupSkip();
+        return aggregatePipelineService.aggregateGroupSort();
     }
 
     @ApiOperation("使用 $group 和 $limit 聚合,先使用 $group 进行分组，然后再使用 $limit 限制一定数目文档")

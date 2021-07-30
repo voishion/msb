@@ -27,12 +27,12 @@ public class TransactionExample {
     public Object transactionTest(){
         // 设置两个用户信息
         User user1 = new User()
-                .setId("11")
-                .setAge(22)
-                .setSex("男")
-                .setRemake("无")
-                .setSalary(1500)
-                .setName("shiyi")
+                .setId("14")
+                .setAge(29)
+                .setSex("女")
+                .setRemake("事务测试")
+                .setSalary(2600)
+                .setName("voishion")
                 .setBirthday(new Date())
                 .setStatus(new Status().setHeight(180).setWeight(150));
         // 插入数据

@@ -67,7 +67,7 @@ public class AggregatePipelineService {
         AggregationOperation group = Aggregation.group("age")
                 .max("salary").as("ageSalary")
                 .count().as("ageCount");
-        AggregationOperation sort = Aggregation.sort(Sort.by("ageSalary").ascending());
+        AggregationOperation sort = Aggregation.sort(Sort.by("ageSalary").descending());
         // 将操作加入到聚合对象中
         Aggregation aggregation = Aggregation.newAggregation(group, sort);
         // 执行聚合查询
@@ -90,7 +90,7 @@ public class AggregatePipelineService {
                 .max("salary").as("maxSalary")
                 .min("salary").as("minSalary")
                 .avg("salary").as("avgSalary");
-        AggregationOperation limit = Aggregation.limit(5L);
+        AggregationOperation limit = Aggregation.limit(2L);
         // 将操作加入到聚合对象中
         Aggregation aggregation = Aggregation.newAggregation(group, limit);
         // 执行聚合查询
@@ -152,8 +152,8 @@ public class AggregatePipelineService {
      */
     public Object aggregateProjectUnwind() {
         // 设置聚合条件，设置显示`name`、`age`、`title`字段，然后将结果中的多条文档按 title 字段进行拆分
-        AggregationOperation project = Aggregation.project("name", "age", "title");
-        AggregationOperation unwind = Aggregation.unwind("title");
+        AggregationOperation project = Aggregation.project("name", "age", "remake");
+        AggregationOperation unwind = Aggregation.unwind("remake");
         // 将操作加入到聚合对象中
         Aggregation aggregation = Aggregation.newAggregation(project, unwind);
         // 执行聚合查询

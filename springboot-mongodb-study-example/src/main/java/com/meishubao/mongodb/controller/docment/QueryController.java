@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -27,10 +28,16 @@ public class QueryController {
         return queryService.findAll();
     }
 
+    @ApiOperation("分页查询集合中的【全部】文档数据")
+    @PostMapping(value = "/findPage")
+    public Object findPage(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "20") Integer size) {
+        return queryService.findPage(page, size);
+    }
+
     @ApiOperation("根据【文档ID】查询集合中文档数据")
     @PostMapping(value = "/findById")
-    public Object findById() {
-        return queryService.findById();
+    public Object findById(@RequestParam(defaultValue = "1") Object id) {
+        return queryService.findById(id);
     }
 
     @ApiOperation("根据【条件】查询集合中【符合条件】的文档，只取【第一条】数据")
@@ -95,8 +102,8 @@ public class QueryController {
 
     @ApiOperation("根据【正则表达式】查询集合中的文档数据")
     @PostMapping(value = "/findByRegex")
-    public Object findByRegex() {
-        return queryService.findByRegex();
+    public Object findByRegex(@RequestParam(defaultValue = "zh") String regex) {
+        return queryService.findByRegex(regex);
     }
 
     @ApiOperation("统计集合中符合【查询条件】的文档【数量】")

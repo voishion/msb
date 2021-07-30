@@ -3,14 +3,18 @@ package com.meishubao.mongodb.service.docment;
 import com.meishubao.mongodb.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * 文档查询
@@ -19,7 +23,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class QueryService {
+public class QueryService extends BaseService<User> {
 
     /**
      * 设置集合名称
@@ -45,13 +49,40 @@ public class QueryService {
     }
 
     /**
+     * 分页查询集合中的【全部】文档数据
+     *
+     * @param page 当前页，从1开始
+     * @param size 数据量
+     * @return 分页数据
+     */
+    public Page<User> findPage(Integer page, Integer size) {
+        Query query = new Query();
+        Sort sort = Sort.by("age").descending();
+
+        Pageable pageable = null;
+        if (Objects.isNull(sort)) {
+            pageable = PageRequest.of(page - 1, size);
+        } else {
+            pageable = PageRequest.of(page - 1, size, sort);
+        }
+
+        // 查询结果集
+        List<User> result = new ArrayList<>();
+        // 计算总数
+        long total = mongoTemplate.count(new BasicQuery(query.getQueryObject().toJson()), COLLECTION_NAME);
+        if (total > 0) {
+            // 查询结果集
+            result = mongoTemplate.find(query.with(pageable), User.class, COLLECTION_NAME);
+        }
+        return new PageImpl<User>(result, pageable, total);
+    }
+
+    /**
      * 根据【文档ID】查询集合中文档数据
      *
      * @return 文档信息
      */
-    public Object findById() {
-        // 设置查询的文档 ID
-        String id = "1";
+    public Object findById(Object id) {
         // 根据文档ID查询集合中文档数据，并转换为对应 Java 对象
         User user = mongoTemplate.findById(id, User.class, COLLECTION_NAME);
         // 输出结果
@@ -111,7 +142,7 @@ public class QueryService {
         // 创建条件对象
         Criteria criteria = Criteria.where("sex").is(sex);
         // 创建查询对象，然后将条件对象添加到其中，然后根据指定字段进行排序
-        Query query = new Query(criteria).with(Sort.by(sort));
+        Query query = new Query(criteria).with(Sort.by(Sort.Direction.ASC, sort));
         // 执行查询
         List<User> documentList = mongoTemplate.find(query, User.class, COLLECTION_NAME);
         // 输出结果
@@ -288,11 +319,14 @@ public class QueryService {
      *
      * @return 符合条件的文档列表
      */
-    public Object findByRegex() {
+    public Object findByRegex(String key) {
         // 设置查询条件参数
-        String regex = "^zh*";
+//        String regex = "^zh*"; // =>'zh%'
+//        String regex = "zh$"; // =>'%zh'
+//        String regex = "zh"; // =>'%zh%'
+        Pattern pattern = Pattern.compile("^.*" + key + ".*$", Pattern.CASE_INSENSITIVE);// =>'%zh%'
         // 创建条件对象
-        Criteria criteria = Criteria.where("name").regex(regex);
+        Criteria criteria = Criteria.where("name").regex(pattern);
         // 创建查询对象，然后将条件对象添加到其中
         Query query = new Query(criteria);
         // 查询并返回结果
