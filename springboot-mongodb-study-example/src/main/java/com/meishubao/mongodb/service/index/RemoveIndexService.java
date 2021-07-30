@@ -1,0 +1,41 @@
+package com.meishubao.mongodb.service.index;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Service;
+
+/**
+ * 删除索引
+ *
+ * @author lilu
+ */
+@Slf4j
+@Service
+public class RemoveIndexService {
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    /**
+     * 设置集合名称
+     */
+    private static final String COLLECTION_NAME = "users";
+
+    /**
+     * 根据索引名称移除索引
+     */
+    public void removeIndex(String indexName) {
+        // 删除集合中某个索引
+        mongoTemplate.getCollection(COLLECTION_NAME).dropIndex(indexName);
+    }
+
+    /**
+     * 移除全部索引
+     */
+    public void removeIndexAll() {
+        // 删除集合中全部索引
+        mongoTemplate.getCollection(COLLECTION_NAME).dropIndexes();
+    }
+
+}

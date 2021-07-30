@@ -1,0 +1,5 @@
+spring:
+  data:
+    mongodb:
+      # mongodb://root:123123@10.10.1.55:27017/ai_app_data_default?authSource=admin
+      uri: mongodb://localhost:27017/ai_app_data_dev
