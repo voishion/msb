@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: spiders
+  datasource:
+    url: jdbc:mysql://localhost:3306/study_example_spiders?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: studyexample
+    password: abc123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 64
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: HikariCP
+      max-lifetime: 900000
+      connection-timeout: 10000
+      connection-test-query: select 'x'
+mybatis-plus:
+  configuration:
+    # 驼峰下划线转换
+    map-underscore-to-camel-case: true
+    # 打印到日志文件上
+    log-prefix: M.SQL.PLUS.
+    # 打印到控制台上
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
