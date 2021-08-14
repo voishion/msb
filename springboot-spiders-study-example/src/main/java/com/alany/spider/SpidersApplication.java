@@ -1,8 +1,5 @@
 package com.alany.spider;
 
-import com.alany.spider.common.BizEnum;
-import com.alany.spider.common.SpringContextHolder;
-import com.alany.spider.core.task.AsyncProcessTask;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.boot.SpringApplication;
@@ -42,10 +39,10 @@ public class SpidersApplication {
         builder.append("----------------------------------------------------------");
         log.info(builder.toString());
 
-        AsyncProcessTask asyncProcessTask = SpringContextHolder.getBean(AsyncProcessTask.class);
-        asyncProcessTask.initProxy();
-        Thread.sleep(1000 * 30);
-        asyncProcessTask.startProcessorsByBusiness(BizEnum.tabobao.getName());
+//        AsyncProcessTask asyncProcessTask = SpringContextHolder.getBean(AsyncProcessTask.class);
+//        asyncProcessTask.initProxy();
+//        Thread.sleep(1000 * 30);
+//        asyncProcessTask.startProcessorsByBusiness(BizEnum.tabobao.getName());
     }
 
 }
