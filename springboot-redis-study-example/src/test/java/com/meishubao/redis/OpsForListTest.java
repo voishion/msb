@@ -99,53 +99,53 @@ public class OpsForListTest {
         System.out.println(",剩余的元素是:" + list);
 
         // 移除集合中左边的元素在等待的时间里，如果超过等待的时间仍没有元素则退出。
-        popValue = redisTemplate.opsForList().leftPop("presentList",1, TimeUnit.SECONDS);
+        popValue = redisTemplate.opsForList().leftPop("presentList", 1, TimeUnit.SECONDS);
         System.out.print("通过leftPop(K key, long timeout, TimeUnit unit)方法移除的元素是:" + popValue);
-        list =  redisTemplate.opsForList().range("presentList",0,-1);
+        list = redisTemplate.opsForList().range("presentList", 0, -1);
         System.out.println(",剩余的元素是:" + list);
 
         // 移除集合中右边的元素。
         popValue = redisTemplate.opsForList().rightPop("list");
         System.out.print("通过rightPop(K key)方法移除的元素是:" + popValue);
-        list =  redisTemplate.opsForList().range("list",0,-1);
+        list = redisTemplate.opsForList().range("list", 0, -1);
         System.out.println(",剩余的元素是:" + list);
 
         // 移除集合中右边的元素在等待的时间里，如果超过等待的时间仍没有元素则退出。
-        popValue = redisTemplate.opsForList().rightPop("presentList",1, TimeUnit.SECONDS);
+        popValue = redisTemplate.opsForList().rightPop("presentList", 1, TimeUnit.SECONDS);
         System.out.print("通过rightPop(K key, long timeout, TimeUnit unit)方法移除的元素是:" + popValue);
-        list =  redisTemplate.opsForList().range("presentList",0,-1);
+        list = redisTemplate.opsForList().range("presentList", 0, -1);
         System.out.println(",剩余的元素是:" + list);
 
         // 移除集合中右边的元素，同时在左边加入一个元素。
-        popValue = redisTemplate.opsForList().rightPopAndLeftPush("list","12");
+        popValue = redisTemplate.opsForList().rightPopAndLeftPush("list", "12");
         System.out.print("通过rightPopAndLeftPush(K sourceKey, K destinationKey)方法移除的元素是:" + popValue);
-        list =  redisTemplate.opsForList().range("list",0,-1);
+        list = redisTemplate.opsForList().range("list", 0, -1);
         System.out.println(",剩余的元素是:" + list);
 
         // 移除集合中右边的元素在等待的时间里，同时在左边添加元素，如果超过等待的时间仍没有元素则退出。
-        popValue = redisTemplate.opsForList().rightPopAndLeftPush("presentList","13",1,TimeUnit.SECONDS);
+        popValue = redisTemplate.opsForList().rightPopAndLeftPush("presentList", "13", 1, TimeUnit.SECONDS);
         System.out.println("通过rightPopAndLeftPush(K sourceKey, K destinationKey, long timeout, TimeUnit unit)方法移除的元素是:" + popValue);
-        list =  redisTemplate.opsForList().range("presentList",0,-1);
+        list = redisTemplate.opsForList().range("presentList", 0, -1);
         System.out.print(",剩余的元素是:" + list);
 
         try {
             // 在集合的指定位置插入元素,如果指定位置已有元素，则覆盖，没有则新增，超过集合下标+n则会报错。
-            redisTemplate.opsForList().set("presentList",3,"15");
-            list =  redisTemplate.opsForList().range("presentList",0,-1);
+            redisTemplate.opsForList().set("presentList", 3, "15");
+            list = redisTemplate.opsForList().range("presentList", 0, -1);
             System.out.print("通过set(K key, long index, V value)方法在指定位置添加元素后:" + list);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         // 从存储在键中的列表中删除等于值的元素的第一个计数事件。count> 0：删除等于从左到右移动的值的第一个元素；count< 0：删除等于从右到左移动的值的第一个元素；count = 0：删除等于value的所有元素。
-        long removeCount = redisTemplate.opsForList().remove("list",0,"w");
-        list =  redisTemplate.opsForList().range("list",0,-1);
+        long removeCount = redisTemplate.opsForList().remove("list", 0, "w");
+        list = redisTemplate.opsForList().range("list", 0, -1);
         System.out.println("通过remove(K key, long count, Object value)方法移除元素数量:" + removeCount);
         System.out.println(",剩余的元素:" + list);
 
         // 截取集合元素长度，保留长度内的数据。
-        redisTemplate.opsForList().trim("list",0,5);
-        list =  redisTemplate.opsForList().range("list",0,-1);
+        redisTemplate.opsForList().trim("list", 0, 5);
+        list = redisTemplate.opsForList().range("list", 0, -1);
         System.out.println("通过trim(K key, long start, long end)方法截取后剩余元素:" + list);
     }
 
