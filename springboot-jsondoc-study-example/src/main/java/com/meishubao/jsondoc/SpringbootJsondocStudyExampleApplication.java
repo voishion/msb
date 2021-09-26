@@ -11,6 +11,10 @@ import org.springframework.util.StringUtils;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * https://github.com/fabiomaffioletti/jsondoc-samples
+ * @author lilu
+ */
 @Slf4j
 @SpringBootApplication
 @EnableJSONDoc
