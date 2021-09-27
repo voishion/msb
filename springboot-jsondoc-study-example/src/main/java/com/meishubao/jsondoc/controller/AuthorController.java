@@ -37,7 +37,7 @@ public class AuthorController {
 	}
 
 	@ApiMethod(id = DocumentationConstants.AUTHOR_SAVE, description = "保存作者接口")
-	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/save")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public @ApiResponseObject ResponseEntity<Void> save(@ApiBodyObject @RequestBody Author author, UriComponentsBuilder uriComponentsBuilder) {
 		authorRepository.save(author);

@@ -4,10 +4,7 @@ import com.meishubao.jsondoc.documentation.DocumentationConstants;
 import com.meishubao.jsondoc.exception.ItemNotFoundException;
 import com.meishubao.jsondoc.model.User;
 import com.meishubao.jsondoc.repository.UserRepository;
-import org.jsondoc.core.annotation.Api;
-import org.jsondoc.core.annotation.ApiError;
-import org.jsondoc.core.annotation.ApiErrors;
-import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +27,7 @@ public class UserController {
 			@ApiError(code = "404", description = "未找到指定id用户")
 	})
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public User findOne(@PathVariable("id") Long id) throws ItemNotFoundException {
+	public User findOne(@ApiPathParam(name = "id", description = "编号") @PathVariable("id") Long id) throws ItemNotFoundException {
 		User findOne = userRepository.findOne(id);
 		if(findOne == null) {
 			throw new ItemNotFoundException();
@@ -38,7 +35,8 @@ public class UserController {
 			return findOne; 
 		}
 	}
-	
+
+	@ApiMethod(id = DocumentationConstants.USER_FIND_ALL, description = "获取全部用户信息")
 	@RequestMapping
 	public List<User> findAll() {
 		return userRepository.findAll();

@@ -16,5 +16,6 @@ public class DocumentationConstants {
 	public final static String AUTHOR_DELETE = "AUTHOR_DELETE";
 
 	public final static String USER_FIND_ONE = "USER_FIND_ONE";
+	public final static String USER_FIND_ALL = "USER_FIND_ALL";
 
 }
