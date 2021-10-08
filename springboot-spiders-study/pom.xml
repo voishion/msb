@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.alany</groupId>
-    <artifactId>springboot-spiders-study-example</artifactId>
+    <artifactId>springboot-spiders-study</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>springboot-spiders-study-example</name>
+    <name>springboot-spiders-study</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
