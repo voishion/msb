@@ -9,3 +9,19 @@ feign:
     response:
       # 配置响应GZIP压缩
       enabled: true
+
+knife4j:
+  enable: true
+  setting:
+    enableOpenApi: false
+    enableAfterScript: false
+    enableFooter: false
+    enableFooterCustom: true
+    footerCustomContent: Copyright &copy; 2021-[美术宝](https://vip.meishubao.com/)
+    enableHost: true
+    enableHostText: https://dev.meixiu.mobi/music/pt
+  cors: true
+  basic:
+    enable: false
+    username: xxms
+    password: xxms
