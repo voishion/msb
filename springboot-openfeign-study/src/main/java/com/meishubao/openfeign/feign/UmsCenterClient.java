@@ -1,4 +1,4 @@
-package com.meishubao.openfeign.service;
+package com.meishubao.openfeign.feign;
 
 import com.meishubao.openfeign.config.FeignConfig;
 import com.meishubao.openfeign.model.Response;

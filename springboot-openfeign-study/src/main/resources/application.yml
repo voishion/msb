@@ -10,6 +10,69 @@ feign:
       # 配置响应GZIP压缩
       enabled: true
 
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 100
+        slidingWindowType: COUNT_BASED
+        # 熔断器关闭状态和半开状态使用的同一个失败率阈值，单位：百分比。默认为 50
+        failureRateThreshold: 60
+        # 熔断器从打开状态转变为半开状态等待的时间，单位：微秒
+        waitDurationInOpenState: 10ms
+        # 在半开状态时，允许调用的数量
+        permittedNumberOfCallsInHalfOpenState: 10
+        # 是否注册到健康监测
+        registerHealthIndicator: true
+        recordExceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.util.concurrent.TimeoutException
+          - java.io.IOException
+  retry:
+    configs:
+      default:
+        # 最大重试次数。默认为 3
+        maxAttempts: 2
+        # 下次重试的间隔，单位：微秒。默认为 500 毫秒
+        waitDuration: 100
+        # 需要重试的异常列表。默认为空
+        retryExceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.util.concurrent.TimeoutException
+          - java.io.IOException
+  bulkhead:
+    configs:
+      default:
+        # 隔板最大的信号量
+        maxConcurrentCalls: 5
+        # 并发调用到达上限时，阻塞等待的时长，单位：微秒。默认为 0
+        maxWaitDuration: 10ms
+  ratelimiter:
+    configs:
+      default:
+        # 每个周期内，允许的请求数。默认为 50
+        limitForPeriod: 3000
+        # 每个周期的时长，默认为 500ns
+        limitRefreshPeriod: 1s
+        # 被限流时，阻塞等待的时长。默认为 5s
+        timeoutDuration: 10s
+    instances:
+      selectCurrentLive:
+        baseConfig: default
+      getLiveLink:
+        baseConfig: default
+      getUserLiveActivity:
+        baseConfig: default
+      getUserLiveActivityLink:
+        baseConfig: default
+  timelimiter:
+    configs:
+      default:
+        # 等待超时时间，单位：微秒。默认为 1 秒
+        timeoutDuration: 2s
+        # 等待超时后取消正在执行的线程任务。默认为 true
+        cancelRunningFuture: false
+
 knife4j:
   enable: true
   setting:

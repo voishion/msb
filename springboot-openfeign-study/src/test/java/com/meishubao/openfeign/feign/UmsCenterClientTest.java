@@ -1,4 +1,4 @@
-package com.meishubao.openfeign.service;
+package com.meishubao.openfeign.feign;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
