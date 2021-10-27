@@ -8,14 +8,17 @@
         <version>2.5.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.meishubao</groupId>
     <artifactId>springboot-study-log4j2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>springboot-study-log4j2</name>
     <description>Demo project for Spring Boot</description>
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
