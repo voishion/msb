@@ -10,9 +10,9 @@
     </parent>
 
     <groupId>com.meishubao</groupId>
-    <artifactId>springboot-localcache-study</artifactId>
+    <artifactId>springboot-study-localcache</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>springboot-localcache-study</name>
+    <name>springboot-study-localcache</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

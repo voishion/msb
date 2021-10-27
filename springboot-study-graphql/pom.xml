@@ -10,10 +10,10 @@
     </parent>
 
     <groupId>com.meishubao</groupId>
-    <artifactId>springboot-graphql-study</artifactId>
+    <artifactId>springboot-study-graphql</artifactId>
     <version>1.0.1-SNAPSHOT</version>
 
-    <name>springboot-graphql-study</name>
+    <name>springboot-study-graphql</name>
     <description>springboot graphql study</description>
 
     <properties>
