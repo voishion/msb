@@ -52,6 +52,12 @@
     <logger name="com.alibaba.nacos" level="OFF">
         <appender-ref ref="CONSOLE"/>
     </logger>
+    <logger name="com.meishubao.openfeign.feign.FeignTestClient" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <logger name="com.meishubao.openfeign.feign.FeignTimeoutTestClient" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
 
     <!-- 根logger -->
     <root level="INFO">

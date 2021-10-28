@@ -7,13 +7,11 @@ import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
-import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
-import java.util.concurrent.CompletionStage;
 
 /**
  * @author admin
@@ -37,9 +35,5 @@ public interface FeignTestClient {
     @RateLimiter(name = Resilience4jHelper.DEFAULT)
     @GetMapping(value = "/feign/test/rateLimiter")
     Optional<String> rateLimiter(@RequestParam(value = "number") Integer number);
-
-    @TimeLimiter(name = Resilience4jHelper.DEFAULT)
-    @GetMapping(value = "/feign/test/timeout")
-    CompletionStage<String> timeout(@RequestParam(value = "number") Integer number);
 
 }

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.springframework.cloud.client.circuitbreaker.NoFallbackAvailableException;
 
 import java.util.Objects;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 熔断常量接口
@@ -56,6 +57,8 @@ public interface Resilience4jHelper {
             error = "隔舱保护";
         } else if (throwable instanceof RequestNotPermitted) {
             error = "流量限制";
+        } else if (throwable instanceof TimeoutException) {
+            error = "访问超时";
         } else if (throwable instanceof MaxRetriesExceededException) {
             error = "频率保护";
         } else {

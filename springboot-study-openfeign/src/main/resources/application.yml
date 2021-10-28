@@ -72,6 +72,11 @@ resilience4j:
         timeoutDuration: 2s
         # 等待超时后取消正在执行的线程任务。默认为 true
         cancelRunningFuture: false
+    instances:
+      timeout2:
+        baseConfig: default
+        timeoutDuration: 3s
+        cancelRunningFuture: true
 
 knife4j:
   enable: true

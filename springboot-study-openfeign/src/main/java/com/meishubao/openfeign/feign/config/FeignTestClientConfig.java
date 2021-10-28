@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 
 /**
  * FeignTestClient接口熔断回退配置
@@ -62,11 +60,6 @@ public class FeignTestClientConfig {
             return Optional.of("反正降级了……rateLimiter");
         }
 
-        @Override
-        public CompletionStage<String> timeout(Integer number) {
-            handleException(throwable, log);
-            return CompletableFuture.supplyAsync(() -> "反正降级了……timeout");
-        }
     }
 
 }
