@@ -8,7 +8,6 @@ import io.github.resilience4j.feign.Resilience4jFeign;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.util.Optional;
@@ -18,7 +17,7 @@ import java.util.Optional;
  *
  * @author lilu
  */
-@Configuration
+//@Configuration
 public class FeignTimeoutTestClientConfig {
 
     @Bean

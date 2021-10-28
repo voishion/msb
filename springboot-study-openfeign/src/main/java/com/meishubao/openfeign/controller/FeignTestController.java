@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.meishubao.openfeign.common.Resilience4jHelper;
 import com.meishubao.openfeign.feign.FeignTestClient;
 import com.meishubao.openfeign.feign.FeignTimeoutTestClient;
+import com.meishubao.openfeign.fuse.FeignTimeoutTestFuse;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class FeignTestController implements Resilience4jHelper {
 
     @Autowired
     FeignTestClient feignTestClient;
+
+    @Autowired
+    FeignTimeoutTestFuse feignTimeoutTestFuse;
 
     @Autowired
     FeignTimeoutTestClient feignTimeoutTestClient;
@@ -75,6 +79,11 @@ public class FeignTestController implements Resilience4jHelper {
     public CompletableFuture<String> timeout2Fallback(Integer number, Throwable throwable) {
         handleException(throwable, log);
         return CompletableFuture.supplyAsync(() -> "Controller层降级");
+    }
+
+    @GetMapping("/timeout4")
+    public String timeout4(@RequestParam Integer number) throws Exception {
+        return feignTimeoutTestFuse.timeout2(number).get().get();
     }
 
 }

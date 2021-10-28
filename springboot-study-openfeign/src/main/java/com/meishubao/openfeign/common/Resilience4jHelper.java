@@ -19,6 +19,9 @@ public interface Resilience4jHelper {
 
     String DEFAULT = "default";
 
+    String TIMEOUT2_MN = "timeout2";
+    String TIMEOUT2_FM = TIMEOUT2_MN + "Fallback";
+
     String SELECT_CURRENT_LIVE_MN = "selectCurrentLive";
     String SELECT_CURRENT_LIVE_FM = SELECT_CURRENT_LIVE_MN + "Fallback";
 
