@@ -16,16 +16,16 @@ import lombok.NoArgsConstructor;
 @ApiModel("通用接口返回对象")
 public class Results<T> {
 
-    @ApiModelProperty(required = true,notes = "结果码",example = "200")
+    @ApiModelProperty(required = true, notes = "结果码", example = "200")
     private int state;
-    @ApiModelProperty(required = true,notes = "时间戳",example = "1567425139000")
+    @ApiModelProperty(required = true, notes = "时间戳", example = "1567425139000")
     private long time;
-    @ApiModelProperty(required = true,notes = "返回信息",example = "SUCCESS")
+    @ApiModelProperty(required = true, notes = "返回信息", example = "SUCCESS")
     private String message;
-    @ApiModelProperty(required = true,notes = "返回数据",example = "{\"name\":\"blues\"}")
+    @ApiModelProperty(required = true, notes = "返回数据", example = "{\"name\":\"blues\"}")
     private T content;
 
-    public Results(int code, String msg, T obj){
+    public Results(int code, String msg, T obj) {
         setState(code);
         setMessage(msg);
         setContent(obj);

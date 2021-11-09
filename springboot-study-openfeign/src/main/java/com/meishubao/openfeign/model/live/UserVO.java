@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @ApiModel("用户对象")
 public class UserVO {
 
-    @ApiModelProperty(required = true,notes = "用户名",example = "blues")
+    @ApiModelProperty(required = true, notes = "用户名", example = "blues")
     private String name;
 
-    @ApiModelProperty(required = true,notes = "用户返回消息",example = "hello world")
+    @ApiModelProperty(required = true, notes = "用户返回消息", example = "hello world")
     private String words;
 }

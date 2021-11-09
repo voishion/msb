@@ -8,13 +8,19 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author lilu
@@ -44,7 +50,8 @@ public class Swagger2Config {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
-                .extensions(openApiExtensionResolver.buildExtensions(groupName));
+                .extensions(openApiExtensionResolver.buildExtensions(groupName))
+                .globalOperationParameters(operationParameters());
     }
 
     private ApiInfo apiInfo() {
@@ -54,6 +61,19 @@ public class Swagger2Config {
                 .contact(new Contact("Leif Liu", null, "leif1995@dingtalk.com"))
                 .version("v1.0.0")
                 .build();
+    }
+
+    private List<Parameter> operationParameters() {
+        List<Parameter> globalRequestParameters = new ArrayList<>();
+        globalRequestParameters.add(new ParameterBuilder()
+                .parameterType("header")
+                .name("Authorization")
+                .description("票据令牌信息")
+                .required(false)
+                .modelRef(new ModelRef("string"))
+                .defaultValue("Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJ1c2VyIiwic3ViIjoidXNlciIsImlhdCI6MTU4OTI4MjIyNiwiYXVkIjoiVVNFUiIsImV4cCI6MTU5NzkyMjIyNn0.2TvWyvXYLYc3m22w-7PPzVczLSwswBGE_zTCflVWRoD3SQjq8pOEDSGnAMUppV776D3IST8EAL-bktQ-XPnzpQ")
+                .build());
+        return globalRequestParameters;
     }
 
 }
