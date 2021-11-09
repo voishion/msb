@@ -1,0 +1,25 @@
+info:
+  build:
+    time: ${build.time}
+    groupId: ${build.group}
+    artifactId: ${build.artifact}
+    version: ${build.version}
+    name: ${build.name}
+
+knife4j:
+  enable: true
+  setting:
+    enableGroup: false
+    enableFooter: false
+    enableFooterCustom: true
+    footerCustomContent: Copyright &copy; 2021-[美术宝](https://vip.meishubao.com/)
+    enableOpenApi: false
+    enableAfterScript: false
+    enableDebug: true
+    enableHost: true
+    enableHostText: https://${spring.profiles.active}.meixiu.mobi/music/wk
+  cors: true
+  basic:
+    enable: false
+    username: xxms
+    password: xxms
