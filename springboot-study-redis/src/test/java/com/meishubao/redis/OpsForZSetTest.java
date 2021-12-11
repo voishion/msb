@@ -1,5 +1,6 @@
 package com.meishubao.redis;
 
+import com.meishubao.redis.entity.RtmClientVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,27 @@ public class OpsForZSetTest {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Test
-    public void test() throws InterruptedException {
+    public void test1() throws InterruptedException {
+        //获取指定区间的元素
+        System.out.println(Objects.isNull(redisTemplate.opsForZSet().score("zSetValue", "A")));
+        System.out.println(Objects.isNull(redisTemplate.opsForZSet().score("zSetValue", "E")));
+    }
+
+    @Test
+    public void remove() throws InterruptedException {
+        //获取指定区间的元素
+        String key = "kkkkkkkkk";
+        RtmClientVO vo1 = new RtmClientVO("1", "12345");
+        RtmClientVO vo2 = new RtmClientVO("1", "67891");
+        redisTemplate.opsForZSet().add(key, vo1, 1);
+        redisTemplate.opsForZSet().add(key, vo2, 1);
+        System.out.println(redisTemplate.opsForZSet().remove(key, vo1));
+        System.out.println(redisTemplate.opsForZSet().remove(key, vo2));
+    }
+
+
+    @Test
+    public void test2() throws InterruptedException {
         // 添加元素到变量中同时指定元素的分值。
         redisTemplate.opsForZSet().add("zSetValue", "A", 1);
         redisTemplate.opsForZSet().add("zSetValue", "B", 3);
