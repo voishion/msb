@@ -24,7 +24,13 @@ public class OpsForSetTest {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Test
-    public void test() throws InterruptedException {
+    public void test1() {
+        long setLength = redisTemplate.opsForSet().size("setValue");
+        System.out.println("通过size(K key)方法获取变量中元素值的长度:" + setLength);
+    }
+
+    @Test
+    public void test2() throws InterruptedException {
         // 向变量中批量添加值。
         redisTemplate.opsForSet().add("setValue", "A", "B", "C", "B", "D", "E", "F");
 
