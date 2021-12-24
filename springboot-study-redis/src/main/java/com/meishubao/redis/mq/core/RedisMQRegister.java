@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Log4j2
 public class RedisMQRegister implements ApplicationRunner, ApplicationContextAware {
 
-    private final static String THREAD_PREFIX = "redis-mq-thread-";
+    private static final String THREAD_PREFIX = "redis-mq-thread-";
 
     private final Set<String> registerQueueName = new HashSet<>();
 
