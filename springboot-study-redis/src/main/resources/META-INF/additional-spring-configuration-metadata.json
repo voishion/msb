@@ -1,0 +1,16 @@
+{
+  "properties": [
+    {
+      "name": "redis.mq.producer",
+      "type": "java.lang.Boolean",
+      "defaultValue": "false",
+      "description": "是否开启Redis生产者模式."
+    },
+    {
+      "name": "redis.mq.consumer",
+      "type": "java.lang.Boolean",
+      "defaultValue": "false",
+      "description": "是否开启Redis消费者模式."
+    }
+  ]
+}

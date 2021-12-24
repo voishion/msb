@@ -1,24 +1,26 @@
 package com.meishubao.redis.listener;
 
-import com.meishubao.redis.listener.event.KeyExpirationEventMessageListener;
+import com.meishubao.redis.listener.event.KeyUpdateEventMessageListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Component;
 
-/**
- * Redis过期回调监听方法
- * @author lilu
- */
 @Slf4j
 @Component
-public class RedisKeyExpirationListener extends KeyExpirationEventMessageListener {
+public class RedisKeyUpdateListener extends KeyUpdateEventMessageListener {
 
-    public RedisKeyExpirationListener(@Qualifier("redisMessageListenerContainer1") RedisMessageListenerContainer listenerContainer) {
+    public RedisKeyUpdateListener(@Qualifier("redisMessageListenerContainer3") RedisMessageListenerContainer listenerContainer) {
         super(listenerContainer);
     }
 
+    /**
+     * 针对redis数据删除事件，进行数据处理
+     *
+     * @param message message.toString()获取失效的key
+     * @param pattern
+     */
     @Override
     public void onMessage(Message message, byte[] pattern) {
         System.out.println(message.toString());

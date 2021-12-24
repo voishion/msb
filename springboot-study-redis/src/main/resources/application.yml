@@ -4,10 +4,22 @@ spring:
     host: localhost
     port: 26379
     password: redispwd
-    lettuce:
+    timeout: 200
+    jedis:
       pool:
         min-idle: 5
         max-idle: 10
         max-active: 8
         max-wait: 1ms
-      shutdown-timeout: 100ms
+#    lettuce:
+#      pool:
+#        min-idle: 5
+#        max-idle: 10
+#        max-active: 8
+#        max-wait: 1ms
+#      shutdown-timeout: 100ms
+
+redis:
+  mq:
+    producer: true
+    consumer: true
