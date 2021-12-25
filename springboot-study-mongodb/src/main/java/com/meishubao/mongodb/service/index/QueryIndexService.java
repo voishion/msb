@@ -1,7 +1,7 @@
 package com.meishubao.mongodb.service.index;
 
 import com.mongodb.client.ListIndexesIterable;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author lilu
  */
-@Slf4j
+@Log4j2
 @Service
 public class QueryIndexService {
 

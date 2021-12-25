@@ -12,6 +12,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -33,10 +34,13 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
 
     private final RedisTemplate redisTemplate;
 
+    private final Jackson2JsonRedisSerializer jackson2JsonRedisSerializer;
+
     private ApplicationContext applicationContext;
 
-    public RedisMQRegister(RedisTemplate redisTemplate) {
+    public RedisMQRegister(RedisTemplate redisTemplate, Jackson2JsonRedisSerializer jackson2JsonRedisSerializer) {
         this.redisTemplate = redisTemplate;
+        this.jackson2JsonRedisSerializer = jackson2JsonRedisSerializer;
     }
 
     @Override
@@ -70,6 +74,12 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
 
         private List<RedisMQListenerTarget> consumerTargets = new ArrayList<>();
 
+        /**
+         * 阻塞连接超时时间，一定要比${spring.redis.timeout}配置的时间短，否是会出现连接超时异常
+         * 10秒
+         */
+        private int TIME_OUT = 10;
+
         private Worker(String queueName) {
             this.queueName = queueName;
             initConsumerTargets();
@@ -89,21 +99,26 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
             }
             while (true) {
                 try {
-                    RedisMQMessage message = (RedisMQMessage) redisTemplate.opsForList().leftPop(queueName, 0L, TimeUnit.SECONDS);
-                    if (Objects.nonNull(message) && consumerTargets.size() > 0) {
-                        for (RedisMQListenerTarget target : consumerTargets) {
-                            Method targetMethod = target.getMethod();
-                            if (target.getMethodParameterClassName().equals(RedisMQMessage.class.getName())) {
-                                targetMethod.invoke(target.getBean(applicationContext), message);
-                            } else if (target.getMethodParameterClassName().equalsIgnoreCase(message.getPayload().getClass().getName())) {
-                                targetMethod.invoke(target.getBean(applicationContext), message.getPayload());
-                            } else {
-                                throw new RedisMQException(StrUtil.format("消息队列【{}】中的消息类型与【{}】方法中定义的消息类型不一致", queueName, targetMethod.getName()));
-                            }
-                        }
-                    }
+                    // 删除并返回存储在key处的列表中的第一个元素。阻塞连接，直到元素可用或超时
+                    RedisMQMessage message = (RedisMQMessage) redisTemplate.opsForList().leftPop(queueName, TIME_OUT, TimeUnit.SECONDS);
+                    handleMessage(message);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     log.error("消息队列【{}】处理消息时异常, error=>{}", queueName, Throwables.getStackTraceAsString(e));
+                }
+            }
+        }
+
+        private void handleMessage(RedisMQMessage message) throws IllegalAccessException, InvocationTargetException {
+            if (Objects.nonNull(message) && consumerTargets.size() > 0) {
+                for (RedisMQListenerTarget target : consumerTargets) {
+                    Method targetMethod = target.getMethod();
+                    if (target.getMethodParameterClassName().equals(RedisMQMessage.class.getName())) {
+                        targetMethod.invoke(target.getBean(applicationContext), message);
+                    } else if (target.getMethodParameterClassName().equalsIgnoreCase(message.getPayload().getClass().getName())) {
+                        targetMethod.invoke(target.getBean(applicationContext), message.getPayload());
+                    } else {
+                        throw new RedisMQException(StrUtil.format("消息队列【{}】中的消息类型与【{}】方法中定义的消息类型不一致", queueName, targetMethod.getName()));
+                    }
                 }
             }
         }

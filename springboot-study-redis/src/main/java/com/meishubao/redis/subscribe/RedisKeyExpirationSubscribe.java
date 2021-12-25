@@ -1,4 +1,4 @@
-package com.meishubao.redis.listener;
+package com.meishubao.redis.subscribe;
 
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Value;

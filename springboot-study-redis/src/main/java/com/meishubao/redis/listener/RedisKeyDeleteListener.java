@@ -1,33 +1,64 @@
 package com.meishubao.redis.listener;
 
-import com.meishubao.redis.listener.event.KeyDeleteEventMessageListener;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
+import cn.hutool.core.util.StrUtil;
+import com.meishubao.redis.listener.event.RedisKeyDeleteEvent;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.listener.KeyspaceEventMessageListener;
+import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-@Slf4j
+/**
+ * MessageListener通过ApplicationEventPublisher发布RedisKeyExpiredEvents，通过监听Redis keyspace的键删除通知
+ *
+ * @author lilu
+ */
+@Log4j2
 @Component
-public class RedisKeyDeleteListener extends KeyDeleteEventMessageListener {
+public class RedisKeyDeleteListener extends KeyspaceEventMessageListener implements ApplicationEventPublisherAware {
 
-    public RedisKeyDeleteListener(@Qualifier("redisMessageListenerContainer2") RedisMessageListenerContainer listenerContainer) {
-        super(listenerContainer);
+    @Value("${spring.redis.database}")
+    private String database;
+
+    private static final String DB_PATTERN = "__keyevent@{}__:del";
+
+    @Nullable
+    private ApplicationEventPublisher publisher;
+
+    public RedisKeyDeleteListener(RedisMessageListenerContainer redisMessageListenerContainer) {
+        super(redisMessageListenerContainer);
     }
 
-    /**
-     * 针对redis数据删除事件，进行数据处理
-     * @param message message.toString()获取失效的key
-     * @param pattern
-     */
     @Override
-    public void onMessage(Message message, byte[] pattern) {
-        System.out.println(message.toString());
-        byte[] body = message.getBody();// 建议使用: valueSerializer
+    protected void doRegister(RedisMessageListenerContainer listenerContainer) {
+        listenerContainer.addMessageListener(this, new PatternTopic(StrUtil.format(DB_PATTERN, database)));
+    }
+
+    protected void doHandleMessage(Message message) {
+        publishEvent(new RedisKeyDeleteEvent(message.getBody()));
+    }
+
+    protected void publishEvent(RedisKeyDeleteEvent event) {
+        if (publisher != null) {
+            publisher.publishEvent(event);
+        }
+    }
+
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        publisher = applicationEventPublisher;
+    }
+
+    @Override
+    public void onMessage(Message message, @Nullable byte[] pattern) {
+        log.info("key:{}", message.toString());
+        byte[] body = message.getBody();
         byte[] channel = message.getChannel();
-        System.out.print("onMessage >> " );
-        System.out.println(String.format("channel: %s, body: %s, bytes: %s",new String(channel), new String(body), new String(pattern)));
-        super.onMessage(message, pattern);
+        log.info("channel:{}, body:{}, bytes:{}", new String(channel), new String(body), new String(pattern));
     }
 
 }

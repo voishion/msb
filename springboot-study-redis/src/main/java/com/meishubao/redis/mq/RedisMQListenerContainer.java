@@ -1,8 +1,6 @@
-package com.meishubao.redis.service;
+package com.meishubao.redis.mq;
 
 import com.meishubao.redis.constant.RedisMQConstant;
-import com.meishubao.redis.mq.RedisMQListener;
-import com.meishubao.redis.mq.RedisMQMessage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 

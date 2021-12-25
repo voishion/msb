@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 /**
  * @author lilu
@@ -20,6 +21,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class RedisMQConfig {
 
     private final RedisTemplate redisTemplate;
+
+    private final Jackson2JsonRedisSerializer jackson2JsonRedisSerializer;
 
     @Bean
     @ConditionalOnBean(RedisTemplate.class)
@@ -39,7 +42,7 @@ public class RedisMQConfig {
     @ConditionalOnBean(RedisMQListenerScanner.class)
     @ConditionalOnProperty(name = "redis.mq.consumer",havingValue = "true")
     public RedisMQRegister redisMQRegister() {
-        return new RedisMQRegister(redisTemplate);
+        return new RedisMQRegister(redisTemplate, jackson2JsonRedisSerializer);
     }
 
 }
