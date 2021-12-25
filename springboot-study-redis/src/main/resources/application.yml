@@ -18,8 +18,6 @@ spring:
         max-active: 8
         max-wait: 1ms
       shutdown-timeout: 100ms
-
-redis:
-  mq:
-    producer: true
-    consumer: true
+    message-queue:
+      producer: true
+      consumer: true

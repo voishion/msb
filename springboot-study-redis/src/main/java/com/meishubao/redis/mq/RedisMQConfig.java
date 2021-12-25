@@ -9,40 +9,34 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 /**
  * @author lilu
  */
 @Configuration
 @ConditionalOnBean(RedisTemplate.class)
-@ConditionalOnProperty(prefix = "redis.queue.listener", name = "enable", havingValue = "true", matchIfMissing = true)
 @RequiredArgsConstructor
 public class RedisMQConfig {
 
     private final RedisTemplate redisTemplate;
 
-    private final Jackson2JsonRedisSerializer jackson2JsonRedisSerializer;
-
     @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    @ConditionalOnProperty(name = "redis.mq.producer",havingValue = "true")
+    @ConditionalOnProperty(name = "spring.redis.message-queue.producer",havingValue = "true", matchIfMissing = false)
     public RedisMQSender redisMQSender() {
         return new RedisMQSender(redisTemplate);
     }
 
     @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    @ConditionalOnProperty(name = "redis.mq.consumer",havingValue = "true")
+    @ConditionalOnProperty(name = "spring.redis.message-queue.consumer",havingValue = "true", matchIfMissing = false)
     public RedisMQListenerScanner redisMQListenerScanner() {
         return new RedisMQListenerScanner();
     }
 
     @Bean
     @ConditionalOnBean(RedisMQListenerScanner.class)
-    @ConditionalOnProperty(name = "redis.mq.consumer",havingValue = "true")
+    @ConditionalOnProperty(name = "spring.redis.message-queue.consumer",havingValue = "true", matchIfMissing = false)
     public RedisMQRegister redisMQRegister() {
-        return new RedisMQRegister(redisTemplate, jackson2JsonRedisSerializer);
+        return new RedisMQRegister(redisTemplate);
     }
 
 }

@@ -12,7 +12,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -34,13 +33,10 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
 
     private final RedisTemplate redisTemplate;
 
-    private final Jackson2JsonRedisSerializer jackson2JsonRedisSerializer;
-
     private ApplicationContext applicationContext;
 
-    public RedisMQRegister(RedisTemplate redisTemplate, Jackson2JsonRedisSerializer jackson2JsonRedisSerializer) {
+    public RedisMQRegister(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
-        this.jackson2JsonRedisSerializer = jackson2JsonRedisSerializer;
     }
 
     @Override
