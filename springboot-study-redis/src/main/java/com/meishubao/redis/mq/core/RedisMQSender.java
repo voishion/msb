@@ -31,7 +31,7 @@ public class RedisMQSender {
         redisMQMessage.setCreateTime(System.currentTimeMillis());
         redisMQMessage.setPayload(message);
 
-        Long length = redisTemplate.opsForList().rightPush(queueName, redisMQMessage);
+        Long length = redisTemplate.opsForList().leftPush(queueName, redisMQMessage);
         log.info("发送Redis队列消息，发送后队列长度:{}，队列名称:{}，消息内容:{}", length, queueName, redisMQMessage);
     }
 

@@ -32,12 +32,31 @@ public class RedisMQController {
 
     @GetMapping("hello3")
     public String send3() {
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < 50000; i++) {
             if (i % 2 == 0) {
-                redisMQSender.send(RedisMQConstant.TEST_QUEUE, "message1");
+                redisMQSender.send(RedisMQConstant.TEST_QUEUE, String.valueOf(i));
             } else {
-                redisMQSender.send(RedisMQConstant.TEST_QUEUE_2, "message2");
+                redisMQSender.send(RedisMQConstant.TEST_QUEUE_2, String.valueOf(i));
             }
+            if (i == 25000) {
+                System.out.println(i);
+            }
+        }
+        return "";
+    }
+
+    @GetMapping("hello4")
+    public String send4() {
+        for (int i = 0; i < 10; i++) {
+            redisMQSender.send(RedisMQConstant.TEST_QUEUE_2, String.valueOf(i));
+        }
+        return "";
+    }
+
+    @GetMapping("hello5")
+    public String send5() {
+        for (int i = 0; i < 100000; i++) {
+            redisMQSender.send(RedisMQConstant.TEST_QUEUE_2, String.valueOf(i));
         }
         return "";
     }

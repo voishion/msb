@@ -40,3 +40,9 @@ m     Key miss events (events generated when a key that doesn't exist is accesse
 A     Alias for "g$lshztxed", so that the "AKE" string means all the events except "m".
 ```
 
+- ## Redis消息队列
+
+[Redis 消息队列的三种方案（List、Streams、Pub/Sub）](https://zhuanlan.zhihu.com/p/344269737)
+
+[Redis实现消息队列的4种方案](https://www.jianshu.com/p/d32b16f12f09)
+

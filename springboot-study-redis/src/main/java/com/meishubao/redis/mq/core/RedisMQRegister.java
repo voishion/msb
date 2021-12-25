@@ -72,6 +72,8 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
 
         private final String queueName;
 
+        private final String queueNameBak;
+
         private List<RedisMQListenerTarget> consumerTargets = new ArrayList<>();
 
         /**
@@ -82,7 +84,9 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
 
         private Worker(String queueName) {
             this.queueName = queueName;
+            this.queueNameBak = queueName + ":bak";
             initConsumerTargets();
+            checkNeedRecoverMessage();
         }
 
         private void initConsumerTargets() {
@@ -98,12 +102,19 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
                 return;
             }
             while (true) {
+                RedisMQMessage message = null;
                 try {
-                    // 删除并返回存储在key处的列表中的第一个元素。阻塞连接，直到元素可用或超时
-                    RedisMQMessage message = (RedisMQMessage) redisTemplate.opsForList().leftPop(queueName, TIME_OUT, TimeUnit.SECONDS);
-                    handleMessage(message);
+                    // 删除并返回存储在key处的列表中的第一个元素。阻塞连接，直到元素可用或超时，可靠消费
+                    message = (RedisMQMessage) redisTemplate.opsForList().rightPopAndLeftPush(queueName, queueNameBak, TIME_OUT, TimeUnit.SECONDS);
+                    if (Objects.nonNull(message)) {
+                        handleMessage(message);
+                        clearBakMessage();
+                    }
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     log.error("消息队列【{}】处理消息时异常, error=>{}", queueName, Throwables.getStackTraceAsString(e));
+                    if (Objects.nonNull(message)) {
+                        recoverMessage();
+                    }
                 }
             }
         }
@@ -122,6 +133,21 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
                 }
             }
         }
+
+        private void checkNeedRecoverMessage() {
+            while (redisTemplate.opsForList().size(queueNameBak) > 0) {
+               recoverMessage();
+            }
+        }
+
+        private void recoverMessage() {
+            redisTemplate.opsForList().leftPush(queueName, redisTemplate.opsForList().leftPop(queueNameBak));
+        }
+
+        private void clearBakMessage() {
+            redisTemplate.opsForList().leftPop(queueNameBak);
+        }
+
     }
 
 }
