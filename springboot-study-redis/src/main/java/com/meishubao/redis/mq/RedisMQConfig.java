@@ -4,8 +4,10 @@ import com.meishubao.redis.mq.core.RedisMQListenerScanner;
 import com.meishubao.redis.mq.core.RedisMQRegister;
 import com.meishubao.redis.mq.core.RedisMQSender;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,7 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  * @author lilu
  */
 @Configuration
-@ConditionalOnBean(RedisTemplate.class)
+@AutoConfigureBefore(RedisAutoConfiguration.class)
 @RequiredArgsConstructor
 public class RedisMQConfig {
 

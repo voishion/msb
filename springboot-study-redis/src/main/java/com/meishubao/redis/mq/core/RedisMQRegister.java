@@ -7,6 +7,7 @@ import com.meishubao.redis.mq.RedisMQListenerTarget;
 import com.meishubao.redis.mq.RedisMQMessage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
@@ -23,13 +24,13 @@ import java.util.stream.Collectors;
  * @author lilu
  */
 @Log4j2
-public class RedisMQRegister implements ApplicationRunner, ApplicationContextAware {
+public class RedisMQRegister implements ApplicationRunner, ApplicationContextAware, DisposableBean {
 
     private static final String THREAD_PREFIX = "redis-mq-thread-";
 
     private final Set<String> registerQueueName = new HashSet<>();
 
-    private final List<Thread> registerQueueThreads = new ArrayList<>();
+    private final List<Worker> registerQueueThreads = new ArrayList<>();
 
     private final RedisTemplate redisTemplate;
 
@@ -45,12 +46,20 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
     }
 
     @Override
+    public void destroy() throws Exception {
+        if (CollUtil.isNotEmpty(registerQueueThreads)) {
+            registerQueueThreads.forEach(worker -> worker.exit());
+        }
+    }
+
+    @Override
     public void run(ApplicationArguments args) throws Exception {
         initializer();
         for (String queueName : registerQueueName) {
-            Thread thread = new Thread(new Worker(queueName), THREAD_PREFIX + queueName);
-            registerQueueThreads.add(thread);
-            thread.start();
+            Worker worker = new Worker(queueName);
+            worker.setName(THREAD_PREFIX + queueName);
+            registerQueueThreads.add(worker);
+            worker.start();
             log.info("启动消息队列监听器【{}】", queueName);
         }
     }
@@ -64,7 +73,9 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
         }
     }
 
-    private class Worker implements Runnable {
+    private class Worker extends Thread {
+
+        private boolean exit = false;
 
         private final String queueName;
 
@@ -97,20 +108,22 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
             if (StrUtil.isBlank(queueName)) {
                 return;
             }
-            while (true) {
-                RedisMQMessage message = null;
+            while (!exit) {
                 try {
                     // 删除并返回存储在key处的列表中的第一个元素。阻塞连接，直到元素可用或超时，可靠消费
-                    message = (RedisMQMessage) redisTemplate.opsForList().rightPopAndLeftPush(queueName, queueNameBak, TIME_OUT, TimeUnit.SECONDS);
-                    if (Objects.nonNull(message)) {
-                        handleMessage(message);
-                        clearBakMessage();
+                    RedisMQMessage message = (RedisMQMessage) redisTemplate.opsForList().rightPopAndLeftPush(queueName, queueNameBak, TIME_OUT, TimeUnit.SECONDS);
+                    if (exit) {
+                        recoverMessage();
+                        log.error("消息队列【{}】停止监听并恢复消息", queueName);
+                    } else {
+                        if (Objects.nonNull(message)) {
+                            handleMessage(message);
+                            clearBakMessage();
+                        }
                     }
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     log.error("消息队列【{}】处理消息时异常, error=>{}", queueName, Throwables.getStackTraceAsString(e));
-                    if (Objects.nonNull(message)) {
-                        recoverMessage();
-                    }
+                    recoverMessage();
                 }
             }
         }
@@ -132,7 +145,7 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
 
         private void checkNeedRecoverMessage() {
             while (redisTemplate.opsForList().size(queueNameBak) > 0) {
-               recoverMessage();
+                recoverMessage();
             }
         }
 
@@ -142,6 +155,11 @@ public class RedisMQRegister implements ApplicationRunner, ApplicationContextAwa
 
         private void clearBakMessage() {
             redisTemplate.opsForList().leftPop(queueNameBak);
+        }
+
+        public void exit() {
+            this.exit = true;
+            log.error("消息队列【{}】停止监听", queueName);
         }
 
     }
