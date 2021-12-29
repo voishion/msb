@@ -1,6 +1,7 @@
 package com.meishubao.okay.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpUtil;
 import com.google.common.collect.Lists;
 import lombok.extern.log4j.Log4j2;
@@ -30,10 +31,11 @@ public class ChannelPressureService {
     final static Integer ProxyPort = 15818;
 
     String LIVE_URL = "https://api.yinyuebao.com/api/play/callback/v1/help/createChannel";
+    String TEST_URL = "https://test.yinyuebao.com/api/play/callback/v1/help/createChannel";
     String DEFAULT_URL = "https://default.yinyuebao.com/api/play/callback/v1/help/createChannel";
 
-    // LIVE, DEFAULT
-    String profile = "LIVE";
+    // LIVE, DEFAULT, TEST
+    String profile = "TEST";
 
     Vector<Integer> statusVector = new Vector<>();
 
@@ -46,7 +48,7 @@ public class ChannelPressureService {
 
     public void count() {
         int total = statusVector.size();
-        log.info("size:{}, concurrency:{}, sleep:{}, current:{}, status:{}, proxy:{}, start:{}", size, concurrency, sleep, total, status, proxy, startRoomId);
+        log.info("size:{}, concurrency:{}, sleep:{}, current:{}, status:{}, proxy:{}, profile:{}, start:{}", size, concurrency, sleep, total, status, proxy, profile, startRoomId);
         Map<Integer, List<Integer>> map = statusVector.stream().collect(Collectors.groupingBy(Function.identity()));
         for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
             if (CollUtil.isNotEmpty(entry.getValue())) {
@@ -59,7 +61,7 @@ public class ChannelPressureService {
         this.status = status;
     }
 
-    public void start(Long startRoomId, Long size, Long sleep, Integer proxy, Integer concurrency) {
+    public void start(Long startRoomId, Long size, Long sleep, Integer proxy, Integer concurrency, String profile) {
         this.startRoomId = startRoomId;
         this.size = size;
         this.sleep = sleep;
@@ -71,6 +73,9 @@ public class ChannelPressureService {
         }
         if (Objects.nonNull(concurrency)) {
             this.concurrency = concurrency;
+        }
+        if (StrUtil.isNotBlank(profile)) {
+            this.profile = profile;
         }
 
         CompletableFuture.runAsync(() -> {
@@ -129,8 +134,9 @@ public class ChannelPressureService {
     }
 
     private String url() {
-        return switch(profile){
+        return switch(this.profile){
             case "LIVE" -> LIVE_URL;
+            case "TEST" -> TEST_URL;
             default -> DEFAULT_URL;
         };
     }

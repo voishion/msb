@@ -19,9 +19,9 @@ public class ChannelPressureController {
     private final ChannelPressureService channelPressureService;
 
     @GetMapping("/start")
-    public String start(Long startRoomId, Long size, Long sleep, Integer proxy, Integer concurrency) {
+    public String start(Long startRoomId, Long size, Long sleep, Integer proxy, Integer concurrency, String profile) {
         this.channelPressureService.switchStatus(true);
-        this.channelPressureService.start(startRoomId, size, sleep, proxy, concurrency);
+        this.channelPressureService.start(startRoomId, size, sleep, proxy, concurrency, profile);
         return "";
     }
 
