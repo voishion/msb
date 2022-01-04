@@ -2,6 +2,7 @@ package com.meishubao.java8.datetime;
 
 import java.time.ZoneId;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 /**
  * ZoneId 示例
@@ -25,5 +26,6 @@ public class ZoneIdExample {
         System.out.println(oldToNewZoneId);
 
         System.out.println(ZoneId.getAvailableZoneIds());
+        System.out.println(ZoneId.getAvailableZoneIds().stream().filter(x -> x.startsWith("Asia")).collect(Collectors.toSet()));
     }
 }
