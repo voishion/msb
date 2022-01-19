@@ -186,7 +186,17 @@ docker pull logstash:7.16.3
    docker restart logstash
    ```
 
-9. 项目集成logstash日志输出至elasticsearch，然后通过kibana查看
+9. 实现logstash收集mysql数据至es
+
+   - 拷贝jar至logstash
+
+     ```shell
+     logstash -f elk_u_complaint_report.conf --path.data=data/
+     ```
+
+   - xsxs
+
+10. 项目集成logstash日志输出至elasticsearch，然后通过kibana查看
 
 
 

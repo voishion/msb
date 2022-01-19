@@ -10,12 +10,12 @@ services:
     environment:
       - "cluster.name=elasticsearch" #设置集群名称为elasticsearch
       - "discovery.type=single-node" #以单一节点模式启动
-      - "ES_JAVA_OPTS=-Xms512m -Xmx1024m" #设置使用jvm内存大小
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" #设置使用jvm内存大小
       - "TZ=Asia/Shanghai"
     volumes:
       - /Users/voishion/work/server/docker/elasticsearch/plugins:/usr/share/elasticsearch/plugins
       - /Users/voishion/work/server/docker/elasticsearch/data:/usr/share/elasticsearch/data
-      - /Users/voishion/work/server/docker/elasticsearch/logs:/usr/share/elasticsearch/logs
+      #- /Users/voishion/work/server/docker/elasticsearch/logs:/usr/share/elasticsearch/logs
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -47,10 +47,17 @@ services:
     links:
       - elasticsearch:es #可以用es这个域名访问elasticsearch服务
     volumes:
-      - /Users/voishion/work/server/docker/logstash/pipeline/logstash-springboot.conf:/usr/share/logstash/pipeline/logstash.conf #挂载logstash的配置文件
+      - /Users/voishion/work/server/docker/logstash/config/mysql-connector-java-8.0.23.jar:/mysql-connector-java-8.0.23.jar
+      # 流水线配置
+      - /Users/voishion/work/server/docker/logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      # 任务配置文件目录
+      - /Users/voishion/work/server/docker/logstash/config/task:/usr/share/logstash/config/task
+      # 任务跟踪文件目录
+      - /Users/voishion/work/server/docker/logstash/config/tracking:/usr/share/logstash/config/tracking
     depends_on:
       - elasticsearch #kibana在elasticsearch启动之后再启动
     environment:
+      - "xpack.monitoring.enabled=true"
       - "xpack.monitoring.elasticsearch.hosts=http://es:9200" # 解决logstash监控连接报错
       - "TZ=Asia/Shanghai"
     ports:
