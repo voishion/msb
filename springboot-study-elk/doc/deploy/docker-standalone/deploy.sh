@@ -6,13 +6,13 @@ usage() {
 }
 
 all(){
-	rm -rf /Users/voishion/work/server/docker/elasticsearch/data/*
-  rm -rf /Users/voishion/work/server/docker/logstash/tracking/*
+	rm -rf /Users/voishion/work/server/docker/elasticsearch/data/nodes
+  rm -rf /Users/voishion/work/server/docker/logstash/tracking/*.txt
   docker-compose up -d --build
 }
 
 logstash(){
-  rm -rf /Users/voishion/work/server/docker/logstash/tracking/*
+  rm -rf /Users/voishion/work/server/docker/logstash/tracking/*.txt
   docker-compose up -d --build logstash
 }
 
