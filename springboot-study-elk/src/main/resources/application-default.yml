@@ -1,0 +1,5 @@
+logging:
+  file:
+    path: ./logs/${spring.application.name}
+  logstash:
+    host: 127.0.0.1:4560

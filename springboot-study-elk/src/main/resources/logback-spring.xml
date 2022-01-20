@@ -3,6 +3,8 @@
 <!-- Logback configuration. See http://logback.qos.ch/manual/index.html -->
 <!-- scanPeriod="10 seconds" : 扫描间隔 -->
 <configuration scan="false">
+    <springProperty scope="context" name="LOGSTASH_HOST" source="logging.logstash.host"/>
+
     <!--继承spring boot提供的logback配置-->
     <!--<include resource="org/springframework/boot/logging/logback/base.xml" />-->
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
@@ -177,7 +179,7 @@
     <!--输出到logstash的appender-->
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <!--可以访问的logstash日志收集端口-->
-        <destination>127.0.0.1:4560</destination>
+        <destination>${LOGSTASH_HOST}</destination>
         <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
@@ -196,41 +198,48 @@
     <logger name="java.sql.ResultSet" level="debug"/>
     <logger name="org.springframework" level="WARN"/>
 
+    <!--本地环境:打印控制台-->
+    <springProfile name="default">
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="DEBUG_FILE"/>
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+            <appender-ref ref="LOGSTASH"/>
+        </root>
+    </springProfile>
+
     <!--开发环境:打印控制台-->
-    <!--    <springProfile name="dev">-->
-    <!--        <root level="info">-->
-    <!--            <appender-ref ref="CONSOLE"/>-->
-    <!--            <appender-ref ref="DEBUG_FILE"/>-->
-    <!--            <appender-ref ref="INFO_FILE"/>-->
-    <!--            <appender-ref ref="WARN_FILE"/>-->
-    <!--            <appender-ref ref="ERROR_FILE"/>-->
-    <!--        </root>-->
-    <!--    </springProfile>-->
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="DEBUG_FILE"/>
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+            <appender-ref ref="LOGSTASH"/>
+        </root>
+    </springProfile>
 
-    <!--    &lt;!&ndash;测试环境:打印控制台和输出到文件&ndash;&gt;-->
-    <!--    <springProfile name="test">-->
-    <!--        <root level="info">-->
-    <!--            <appender-ref ref="CONSOLE"/>-->
-    <!--            <appender-ref ref="INFO_FILE"/>-->
-    <!--            <appender-ref ref="WARN_FILE"/>-->
-    <!--            <appender-ref ref="ERROR_FILE"/>-->
-    <!--        </root>-->
-    <!--    </springProfile>-->
+    <!--测试环境:打印控制台和输出到文件-->
+    <springProfile name="test">
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+        </root>
+    </springProfile>
 
-    <!--    &lt;!&ndash;生产环境:输出到文件&ndash;&gt;-->
-    <!--    <springProfile name="pro">-->
-    <!--        <root level="info">-->
-    <!--            <appender-ref ref="CONSOLE"/>-->
-    <!--            <appender-ref ref="DEBUG_FILE"/>-->
-    <!--            <appender-ref ref="INFO_FILE"/>-->
-    <!--            <appender-ref ref="ERROR_FILE"/>-->
-    <!--        </root>-->
-    <!--    </springProfile>-->
-
-    <root level="info">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="INFO_FILE"/>
-        <appender-ref ref="LOGSTASH"/>
-    </root>
+    <!--生产环境:输出到文件-->
+    <springProfile name="pro">
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="DEBUG_FILE"/>
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+        </root>
+    </springProfile>
 
 </configuration>

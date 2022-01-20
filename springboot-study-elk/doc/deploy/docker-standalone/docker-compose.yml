@@ -60,6 +60,22 @@ services:
     ports:
       - "4560:4560"
 
+  elk:
+    container_name: elk
+    build:
+      context: elk
+      dockerfile: Dockerfile
+    networks:
+      elk_net:
+        aliases:
+          - elk
+    ports:
+      - "8080:8080"
+    depends_on:
+      - logstash
+    links:
+      - logstash:logstash
+
 networks:
   elk_net:
     driver: bridge
