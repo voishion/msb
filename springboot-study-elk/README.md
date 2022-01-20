@@ -100,10 +100,10 @@ docker pull logstash:7.16.3
 3. 跑起来
 
    ```shell
-   docker-compose up -d
-   docker-compose up elasticsearch
-   docker-compose up kibana
-   docker-compose up logstash
+   docker-compose up -d --build
+   docker-compose up -d --build elasticsearch
+   docker-compose up -d --build kibana
+   docker-compose up -d --build logstash
    ```
 
 4. 需要等待elasticsearch跑起来，大概几分钟，访问 [http://127.0.0.1:5601](http://127.0.0.1:5601/)
@@ -191,7 +191,7 @@ docker pull logstash:7.16.3
    - 拷贝jar至logstash
 
      ```shell
-     logstash -f elk_u_complaint_report.conf --path.data=data/
+     logstash -f u_complaint_report.conf --path.data=data/
      ```
 
    - xsxs

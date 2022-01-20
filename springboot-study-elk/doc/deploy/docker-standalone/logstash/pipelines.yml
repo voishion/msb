@@ -1,0 +1,18 @@
+# This file is where you define your pipelines. You can define multiple.
+# For more information on multiple pipelines, see the documentation:
+#   https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html
+
+- pipeline.id: main
+  path.config: "/usr/share/logstash/pipeline"
+
+- pipeline.id: logstash-springboot
+  path.config: "/usr/share/logstash/config/default/logstash-springboot.conf"
+
+- pipeline.id: u_complaint_report
+  path.config: "/usr/share/logstash/config/elk/u_complaint_report.conf"
+
+- pipeline.id: u_complaint_reason
+  path.config: "/usr/share/logstash/config/elk/u_complaint_reason.conf"
+
+- pipeline.id: u_complaint_image
+  path.config: "/usr/share/logstash/config/elk/u_complaint_image.conf"

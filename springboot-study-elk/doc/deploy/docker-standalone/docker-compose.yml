@@ -38,8 +38,10 @@ services:
       - "5601:5601"
 
   logstash:
-    image: logstash:7.16.3
     container_name: logstash
+    build:
+      context: ./logstash
+      dockerfile: Dockerfile
     networks:
       elk_net:
         aliases:
@@ -47,13 +49,8 @@ services:
     links:
       - elasticsearch:es #可以用es这个域名访问elasticsearch服务
     volumes:
-      - /Users/voishion/work/server/docker/logstash/config/mysql-connector-java-8.0.23.jar:/mysql-connector-java-8.0.23.jar
-      # 流水线配置
-      - /Users/voishion/work/server/docker/logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
-      # 任务配置文件目录
-      - /Users/voishion/work/server/docker/logstash/config/task:/usr/share/logstash/config/task
       # 任务跟踪文件目录
-      - /Users/voishion/work/server/docker/logstash/config/tracking:/usr/share/logstash/config/tracking
+      - /Users/voishion/work/server/docker/logstash/tracking:/usr/share/logstash/tracking
     depends_on:
       - elasticsearch #kibana在elasticsearch启动之后再启动
     environment:
