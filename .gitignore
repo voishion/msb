@@ -39,3 +39,6 @@ build/
 **/log/
 /logs/
 **/logs/
+
+### JAR ###
+**/*SNAPSHOT.jar
