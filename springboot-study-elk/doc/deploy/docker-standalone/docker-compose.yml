@@ -4,7 +4,7 @@ services:
     image: elasticsearch:7.16.3
     container_name: elasticsearch
     networks:
-      elk_net:
+      docker_net:
         aliases:
           - elasticsearch
     environment:
@@ -24,7 +24,7 @@ services:
     image: kibana:7.16.3
     container_name: kibana
     networks:
-      elk_net:
+      docker_net:
         aliases:
           - kibana
     links:
@@ -43,7 +43,7 @@ services:
       context: ./logstash
       dockerfile: Dockerfile
     networks:
-      elk_net:
+      docker_net:
         aliases:
           - logstash
     links:
@@ -66,7 +66,7 @@ services:
       context: elk
       dockerfile: Dockerfile
     networks:
-      elk_net:
+      docker_net:
         aliases:
           - elk
     ports:
@@ -77,5 +77,5 @@ services:
       - logstash:logstash
 
 networks:
-  elk_net:
+  docker_net:
     driver: bridge

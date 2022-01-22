@@ -1,18 +1,25 @@
 #!/bin/sh
 
 usage() {
-	echo "Usage: sh deploy.sh [all|logstash|elk|stop|rm]"
+	echo "Usage: sh deploy.sh [run|logstash|elk|stop|remove]"
 	exit 1
 }
 
-all(){
-	rm -rf /Users/voishion/work/server/docker/elasticsearch/data/nodes
-  rm -rf /Users/voishion/work/server/docker/logstash/tracking/*.txt
+clearESFile(){
+  rm -rf /Users/voishion/work/server/docker/elasticsearch/data/nodes
+}
+clearLogstashFile(){
+  rm -f /Users/voishion/work/server/docker/logstash/tracking/*.txt
+}
+
+run(){
+  clearESFile
+  clearLogstashFile
   docker-compose up -d --build
 }
 
 logstash(){
-  rm -rf /Users/voishion/work/server/docker/logstash/tracking/*.txt
+  clearLogstashFile
   docker-compose up -d --build logstash
 }
 
@@ -20,20 +27,23 @@ elk(){
   docker-compose up -d --build elk
 }
 
-# 关闭所有环境/模块
 stop(){
-	docker-compose stop
+	docker-compose stop elk
+	docker-compose stop logstash
+	docker-compose stop kibana
+  docker-compose stop elasticsearch
 }
 
-# 删除所有环境/模块
-rm(){
-	docker-compose rm
+remove(){
+	docker-compose rm elk
+	docker-compose rm logstash
+  docker-compose rm kibana
+  docker-compose rm elasticsearch
 }
 
-# 根据输入参数，选择执行对应方法，不输入则执行使用说明
 case "$1" in
-"all")
-	all
+"run")
+	run
 ;;
 "logstash")
 	logstash
@@ -44,8 +54,8 @@ case "$1" in
 "stop")
 	stop
 ;;
-"rm")
-	rm
+"remove")
+	remove
 ;;
 *)
 	usage

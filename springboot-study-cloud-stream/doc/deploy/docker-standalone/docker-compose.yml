@@ -1,0 +1,39 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    networks:
+      docker_net:
+        aliases:
+          - zookeeper
+    environment:
+      - "TZ=Asia/Shanghai"
+    volumes:
+      - /etc/localtime:/etc/localtime
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    networks:
+      docker_net:
+        aliases:
+          - kafka
+    environment:
+      - "KAFKA_BROKER_ID=0"
+      - "KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181/kafka"
+      - "KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092"
+      - "KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092"
+      - "TZ=Asia/Shanghai"
+    volumes:
+      - /etc/localtime:/etc/localtime
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+
+networks:
+  docker_net:
+    driver: bridge
