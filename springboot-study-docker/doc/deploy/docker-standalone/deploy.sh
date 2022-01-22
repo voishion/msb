@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage() {
-	echo "Usage: sh deploy.sh [run|mysql|nginx|stopmysql|stopnginx|stop|remove]"
+	echo "Usage: sh deploy.sh [run|mysql|redis|nginx|stopmysql|stopredis|stopnginx|stop|remove]"
 	exit 1
 }
 
@@ -13,17 +13,24 @@ mysql(){
   docker-compose up -d --build mysql
 }
 
+redis(){
+  docker-compose up -d --build redis
+}
+
 nginx(){
   docker-compose up -d --build nginx
 }
 
 stop(){
-	docker-compose stop mysql
-	docker-compose stop nginx
+	docker-compose stop
 }
 
 stopmysql(){
 	docker-compose stop mysql
+}
+
+stopredis(){
+	docker-compose stop redis
 }
 
 stopnginx(){
@@ -31,25 +38,30 @@ stopnginx(){
 }
 
 remove(){
-	docker-compose rm mysql
-	docker-compose rm nginx
+	docker-compose rm
 }
 
 case "$1" in
 "run")
 	run
 ;;
-"logstash")
-	logstash
+"mysql")
+	mysql
 ;;
-"elk")
-	elk
+"redis")
+	redis
+;;
+"nginx")
+	nginx
 ;;
 "stop")
 	stop
 ;;
 "stopmysql")
 	stopmysql
+;;
+"stopredis")
+	stopredis
 ;;
 "stopnginx")
 	stopnginx

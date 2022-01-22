@@ -10,13 +10,11 @@ run(){
 }
 
 stop(){
-	docker-compose stop kafka
-	docker-compose stop zookeeper
+	docker-compose stop
 }
 
 remove(){
-	docker-compose rm kafka
-	docker-compose rm zookeeper
+	docker-compose rm
 }
 
 case "$1" in

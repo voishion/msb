@@ -28,6 +28,21 @@ services:
     ports:
       - "3306:3306"
 
+  redis:
+    image: redis:6.2.6
+    container_name: redis
+    networks:
+      docker_net:
+        aliases:
+          - redis
+    volumes:
+      - /Users/voishion/work/server/docker/redis/conf/redis.conf:/etc/redis/redis.conf:rw
+      - /Users/voishion/work/server/docker/redis/data:/data:rw
+      - /Users/voishion/work/server/docker/redis/logs:/logs:rw
+    command: redis-server /etc/redis/redis.conf --appendonly yes
+    ports:
+      - "6379:6379"
+
   nginx:
     image: nginx:1.21.5
     container_name: nginx

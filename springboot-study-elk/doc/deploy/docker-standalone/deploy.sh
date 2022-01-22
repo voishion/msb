@@ -28,17 +28,11 @@ elk(){
 }
 
 stop(){
-	docker-compose stop elk
-	docker-compose stop logstash
-	docker-compose stop kibana
-  docker-compose stop elasticsearch
+	docker-compose stop
 }
 
 remove(){
-	docker-compose rm elk
-	docker-compose rm logstash
-  docker-compose rm kibana
-  docker-compose rm elasticsearch
+	docker-compose rm
 }
 
 case "$1" in

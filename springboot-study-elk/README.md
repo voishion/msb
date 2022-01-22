@@ -7,6 +7,7 @@
 ## 下载Docker镜像
 
 ```shell
+docker pull redis:6.2.6
 docker pull nginx:1.21.5
 docker pull mysql:8.0.28
 docker pull wurstmeister/zookeeper
