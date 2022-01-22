@@ -2,9 +2,15 @@
 
 [参考文档](https://blog.csdn.net/qq_21019419/article/details/103630081)
 
+[DockerHub](https://hub.docker.com/search?type=image)
+
 ## 下载Docker镜像
 
 ```shell
+docker pull nginx:1.21.5
+docker pull mysql:8.0.28
+docker pull wurstmeister/zookeeper
+docker pull wurstmeister/kafka
 docker pull elasticsearch:7.16.3
 docker pull kibana:7.16.3
 docker pull logstash:7.16.3
