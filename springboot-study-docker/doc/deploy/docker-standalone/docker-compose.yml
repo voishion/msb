@@ -28,6 +28,25 @@ services:
     ports:
       - "3306:3306"
 
+  nginx:
+    image: nginx:1.21.5
+    container_name: nginx
+    networks:
+      docker_net:
+        aliases:
+          - nginx
+    environment:
+      TZ: 'Asia/Shanghai'
+    volumes:
+      - /Users/voishion/work/server/docker/nginx/conf.d:/etc/nginx/conf.d
+      - /Users/voishion/work/server/docker/nginx/log:/var/log/nginx
+      - /Users/voishion/work/server/docker/nginx/deploy:/usr/share/nginx
+    command: nginx -g 'daemon off;'
+    ports:
+      #- "80:80"
+      - "37950:37950"
+      - "37951:37951"
+
 networks:
   docker_net:
     driver: bridge

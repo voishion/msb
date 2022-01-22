@@ -1,44 +1,38 @@
 #!/bin/sh
 
 usage() {
-	echo "Usage: sh deploy.sh [run|logstash|elk|stop|remove]"
+	echo "Usage: sh deploy.sh [run|mysql|nginx|stopmysql|stopnginx|stop|remove]"
 	exit 1
 }
 
-clearESFile(){
-  rm -rf /Users/voishion/work/server/docker/elasticsearch/data/nodes
-}
-clearLogstashFile(){
-  rm -f /Users/voishion/work/server/docker/logstash/tracking/*.txt
-}
-
 run(){
-  clearESFile
-  clearLogstashFile
   docker-compose up -d --build
 }
 
-logstash(){
-  clearLogstashFile
-  docker-compose up -d --build logstash
+mysql(){
+  docker-compose up -d --build mysql
 }
 
-elk(){
-  docker-compose up -d --build elk
+nginx(){
+  docker-compose up -d --build nginx
 }
 
 stop(){
-	docker-compose stop elk
-	docker-compose stop logstash
-	docker-compose stop kibana
-  docker-compose stop elasticsearch
+	docker-compose stop mysql
+	docker-compose stop nginx
+}
+
+stopmysql(){
+	docker-compose stop mysql
+}
+
+stopnginx(){
+	docker-compose stop nginx
 }
 
 remove(){
-	docker-compose rm elk
-	docker-compose rm logstash
-  docker-compose rm kibana
-  docker-compose rm elasticsearch
+	docker-compose rm mysql
+	docker-compose rm nginx
 }
 
 case "$1" in
@@ -53,6 +47,12 @@ case "$1" in
 ;;
 "stop")
 	stop
+;;
+"stopmysql")
+	stopmysql
+;;
+"stopnginx")
+	stopnginx
 ;;
 "remove")
 	remove
