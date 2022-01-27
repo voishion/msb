@@ -10,6 +10,7 @@
     <version>1.0.1-SNAPSHOT</version>
     <modules>
         <module>springboot-study-docker</module>
+        <module>springboot-study-admin</module>
     </modules>
 
     <properties>
