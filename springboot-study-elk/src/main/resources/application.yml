@@ -3,3 +3,8 @@ spring:
     name: springboot-study-elk
   profiles:
     active: default
+
+# jasypt加密的密匙
+jasypt:
+  encryptor:
+    password: Y1M6fAJQdU5jNp8MW

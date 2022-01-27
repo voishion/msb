@@ -3,3 +3,6 @@ logging:
     path: ./logs/${spring.application.name}
   logstash:
     host: 127.0.0.1:4560
+
+elk:
+  author: ENC(Oxeq/veGWCd0MX1Tq7Je81PtBSJAPaO6rym0A5cGoHDPf7dJdX9VEn7mL7/xevQM)
