@@ -37,7 +37,7 @@
         <Logger name="org.springframework.context.support" level="WARN"/>
         <Logger name="io.github.resilience4j" level="DEBUG" additivity="false"/>
         <Logger name="springfox.documentation" level="ERROR" additivity="false"/>
-        <Logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="TRACE"/>
+        <!--<Logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="TRACE"/>-->
 
         <!--默认的Root Logger 级别-->
         <Root level="INFO">

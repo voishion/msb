@@ -1,6 +1,9 @@
 package com.meishubao.redis.service;
 
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
+import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.lang.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -379,4 +382,33 @@ public interface RedisService {
 	 * key 和 otherKeys 多个集合的交集,保存在 destKey 集合中
 	 */
 	Long zsIntersectAndStore(String key, Collection<String> otherKeys, String destKey);
+
+	/**
+	 * Executes the given {@link RedisScript}
+	 *
+	 * @param script The script to execute
+	 * @param keys Any keys that need to be passed to the script
+	 * @param args Any args that need to be passed to the script
+	 * @return The return value of the script or null if {@link RedisScript#getResultType()} is null, likely indicating a
+	 *         throw-away status reply (i.e. "OK")
+	 */
+	@Nullable
+	<T> T execute(RedisScript<T> script, List<String> keys, Object... args);
+
+	/**
+	 * Executes the given {@link RedisScript}, using the provided {@link RedisSerializer}s to serialize the script
+	 * arguments and result.
+	 *
+	 * @param script The script to execute
+	 * @param argsSerializer The {@link RedisSerializer} to use for serializing args
+	 * @param resultSerializer The {@link RedisSerializer} to use for serializing the script return value
+	 * @param keys Any keys that need to be passed to the script
+	 * @param args Any args that need to be passed to the script
+	 * @return The return value of the script or null if {@link RedisScript#getResultType()} is null, likely indicating a
+	 *         throw-away status reply (i.e. "OK")
+	 */
+	@Nullable
+	<T> T execute(RedisScript<T> script, RedisSerializer<?> argsSerializer, RedisSerializer<T> resultSerializer,
+				  List<String> keys, Object... args);
+
 }

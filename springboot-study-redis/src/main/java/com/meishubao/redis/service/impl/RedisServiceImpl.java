@@ -7,12 +7,12 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
+import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -407,6 +407,18 @@ public class RedisServiceImpl implements RedisService {
 	@Override
 	public Long zsIntersectAndStore(String key, Collection<String> otherKeys, String destKey) {
 		return redisTemplate.opsForZSet().intersectAndStore(key, otherKeys, destKey);
+	}
+
+	@Nullable
+	@Override
+	public <T> T execute(RedisScript<T> script, List<String> keys, Object... args) {
+		return redisTemplate.execute(script, keys, args);
+	}
+
+	@Nullable
+	@Override
+	public <T> T execute(RedisScript<T> script, RedisSerializer<?> argsSerializer, RedisSerializer<T> resultSerializer, List<String> keys, Object... args) {
+		return redisTemplate.execute(script, argsSerializer, resultSerializer, keys, args);
 	}
 
 }
