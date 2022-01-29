@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * @author lilu
  */
@@ -26,8 +28,18 @@ public class EsBookServiceImpl implements EsBookService {
     }
 
     @Override
+    public Optional<Book> findById(String id) {
+        return esBookRepository.findById(id);
+    }
+
+    @Override
     public Iterable<Book> saveAll(Iterable<Book> entities) {
         return esBookRepository.saveAll(entities);
+    }
+
+    @Override
+    public Book save(Book book) {
+        return esBookRepository.save(book);
     }
 
 }

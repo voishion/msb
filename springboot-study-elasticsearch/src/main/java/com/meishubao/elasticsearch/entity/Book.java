@@ -33,13 +33,13 @@ public class Book {
     private Double price;
 
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.UTC_MS_PATTERN)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DatePattern.UTC_MS_PATTERN, timezone = "GMT+8")
-    @DateTimeFormat(pattern = DatePattern.UTC_MS_PATTERN)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DatePattern.NORM_DATETIME_PATTERN, timezone = "GMT+8")
+    @DateTimeFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime createTime;
 
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.UTC_MS_PATTERN)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DatePattern.UTC_MS_PATTERN, timezone = "GMT+8")
-    @DateTimeFormat(pattern = DatePattern.UTC_MS_PATTERN)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DatePattern.NORM_DATETIME_PATTERN, timezone = "GMT+8")
+    @DateTimeFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
     private LocalDateTime updateTime;
 
 }
