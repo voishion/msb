@@ -39,6 +39,8 @@ build/
 **/log/
 /logs/
 **/logs/
+/${sys:LOG_PATH}/
+**/${sys:LOG_PATH}/
 
 ### JAR ###
 **/*SNAPSHOT.jar
