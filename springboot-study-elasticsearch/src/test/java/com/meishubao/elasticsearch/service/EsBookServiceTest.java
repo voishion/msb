@@ -22,15 +22,17 @@ class EsBookServiceTest {
     @Test
     void saveAll() {
         List<Book> books = new ArrayList<>();
+        LocalDateTime time = LocalDateTime.now();
         for (int i = 0; i < 20; i++) {
              Book book = new Book();
              book.setId(Convert.toStr(i));
              book.setAuthor("赵四" + i);
-             book.setTitle("《论街舞的重要性》" + i + 1);
+             book.setTitle("《论街舞的重要性》" + (i + 1));
              book.setPrice(45.62D + i);
-             book.setCreateTime(LocalDateTime.now());
-             book.setUpdateTime(LocalDateTime.now());
+             book.setCreateTime(time);
+             book.setUpdateTime(time);
              books.add(book);
+             time = time.plusSeconds(1);
         }
         Iterable<Book> all1 = esBookService.saveAll(books);
         all1.forEach(b -> log.info("all1=>{}", b));

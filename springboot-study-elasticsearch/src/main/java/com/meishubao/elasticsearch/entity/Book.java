@@ -1,5 +1,6 @@
 package com.meishubao.elasticsearch.entity;
 
+import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.meishubao.elasticsearch.constant.EsEntityConstant;
 import lombok.Data;
@@ -31,14 +32,14 @@ public class Book {
     @Field(type = FieldType.Double)
     private Double price;
 
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = EsEntityConstant.ES_DATETIME_PATTERN)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = EsEntityConstant.DATETIME_PATTERN, timezone = "GMT+8")
-    @DateTimeFormat(pattern = EsEntityConstant.DATETIME_PATTERN)
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.UTC_MS_PATTERN)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DatePattern.UTC_MS_PATTERN, timezone = "GMT+8")
+    @DateTimeFormat(pattern = DatePattern.UTC_MS_PATTERN)
     private LocalDateTime createTime;
 
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = EsEntityConstant.ES_DATETIME_PATTERN)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = EsEntityConstant.DATETIME_PATTERN, timezone = "GMT+8")
-    @DateTimeFormat(pattern = EsEntityConstant.DATETIME_PATTERN)
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.UTC_MS_PATTERN)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DatePattern.UTC_MS_PATTERN, timezone = "GMT+8")
+    @DateTimeFormat(pattern = DatePattern.UTC_MS_PATTERN)
     private LocalDateTime updateTime;
 
 }
