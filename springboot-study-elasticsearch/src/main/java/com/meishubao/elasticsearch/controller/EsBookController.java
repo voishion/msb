@@ -16,8 +16,7 @@ public class EsBookController {
 
     @GetMapping("/list")
     public Iterable<Book> list() {
-        Iterable<Book> books = esBookService.findAll();
-        return books;
+        return esBookService.findAll();
     }
 
     @GetMapping("/get/{id}")
