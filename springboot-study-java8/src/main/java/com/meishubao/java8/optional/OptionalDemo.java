@@ -84,7 +84,7 @@ public class OptionalDemo {
 
     public static Optional<Integer> parseInt(String value) {
         try {
-            return Optional.ofNullable(Integer.parseInt(value));
+            return Optional.of(Integer.parseInt(value));
         } catch (Exception e) {
             return Optional.empty();
         }
