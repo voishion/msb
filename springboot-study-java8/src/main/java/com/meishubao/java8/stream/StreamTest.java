@@ -24,18 +24,18 @@ public class StreamTest {
 
     public static void main(String[] args) {
         collectHandle();
-//        createStream();
-//        foreachFindMatchFilter();
-//        maxMinCount();
-//        mapFlatMap();
-//        reduce();
-//        collect();
-//        countAveraging();
-//        partitioningByGroupingBy();
-//        joining();
-//        reducing();
-//        sorted();
-//        extractCombination();
+        createStream();
+        foreachFindMatchFilter();
+        maxMinCount();
+        mapFlatMap();
+        reduce();
+        collect();
+        countAveraging();
+        partitioningByGroupingBy();
+        joining();
+        reducing();
+        sorted();
+        extractCombination();
     }
 
     public static void collectHandle() {
