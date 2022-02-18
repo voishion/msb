@@ -28,6 +28,39 @@ services:
     ports:
       - "3306:3306"
 
+  nacos:
+    image: nacos/nacos-server:2.0.3
+    container_name: nacos
+    networks:
+      docker_net:
+        aliases:
+          - nacos
+    env_file:
+      - /Users/voishion/work/server/docker/nacos/env/nacos-standlone-mysql.env
+    volumes:
+      - /Users/voishion/work/server/docker/nacos/standalone-logs/:/home/nacos/logs
+      - /Users/voishion/work/server/docker/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    depends_on:
+      - mysql
+
+  sentinel:
+    image: bladex/sentinel-dashboard:1.8.0
+    container_name: sentinel
+    networks:
+      docker_net:
+        aliases:
+          - sentinel
+    environment:
+      - TZ=Asia/Shanghai
+      - JAVA_OPTS="-Dserver.port=8858 -Dproject.name=sentinel-dashboard -Dcsp.sentinel.dashboard.server=localhost:8858 -Dsentinel.dashboard.auth.username=sentinel -Dsentinel.dashboard.auth.password=sentinel -Dserver.servlet.session.timeout=7200 -Djava.security.egd=file:/dev/./urandom -Dcsp.sentinel.api.port=8719"
+    ports:
+      - "8858:8858"
+      - "8719:8719"
+
   redis:
     image: redis:6.2.6
     container_name: redis

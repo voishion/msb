@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage() {
-	echo "Usage: sh deploy.sh [run|mysql|redis|nginx|stopmysql|stopredis|stopnginx|stop|remove]"
+	echo "Usage: sh deploy.sh [run|mysql|redis|nginx|nacos|sentinel|stopmysql|stopredis|stopnginx|stopnacos|stopsentinel|stop|remove]"
 	exit 1
 }
 
@@ -21,6 +21,14 @@ nginx(){
   docker-compose up -d --build nginx
 }
 
+nacos(){
+  docker-compose up -d --build nacos
+}
+
+sentinel(){
+  docker-compose up -d --build sentinel
+}
+
 stop(){
 	docker-compose stop
 }
@@ -35,6 +43,14 @@ stopredis(){
 
 stopnginx(){
 	docker-compose stop nginx
+}
+
+stopnacos(){
+	docker-compose stop nacos
+}
+
+stopsentinel(){
+	docker-compose stop sentinel
 }
 
 remove(){
@@ -54,6 +70,12 @@ case "$1" in
 "nginx")
 	nginx
 ;;
+"nacos")
+	nacos
+;;
+"sentinel")
+	sentinel
+;;
 "stop")
 	stop
 ;;
@@ -65,6 +87,12 @@ case "$1" in
 ;;
 "stopnginx")
 	stopnginx
+;;
+"stopnacos")
+	stopnacos
+;;
+"stopsentinel")
+	stopsentinel
 ;;
 "remove")
 	remove
