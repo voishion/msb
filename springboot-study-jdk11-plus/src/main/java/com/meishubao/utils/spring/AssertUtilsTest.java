@@ -1,4 +1,4 @@
-package com.meishubao.spring.util;
+package com.meishubao.utils.spring;
 
 import com.google.common.collect.Lists;
 import org.springframework.util.Assert;
