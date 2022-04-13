@@ -1,0 +1,10 @@
+youzan:
+  map:
+    config1:
+      clientId: 7ca51694b82ed90c44
+      clientSecret: 5ad989ae664bb6a94f4f4610873c0442
+      shopId: 96222220
+    config2:
+      clientId: 7ca51694b82ed90c44
+      clientSecret: 5ad989ae664bb6a94f4f4610873c0442
+      shopId: 96222220
