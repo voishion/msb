@@ -2,7 +2,7 @@ package com.meishubao.youzan.service.impl;
 
 import com.google.common.base.Throwables;
 import com.meishubao.youzan.config.YouZanConfig;
-import com.meishubao.youzan.service.YouZanOrderService;
+import com.meishubao.youzan.service.YouZanService;
 import com.youzan.cloud.open.sdk.core.client.auth.Token;
 import com.youzan.cloud.open.sdk.core.client.core.DefaultYZClient;
 import com.youzan.cloud.open.sdk.core.oauth.model.OAuthToken;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class YouZanOrderServiceImpl implements YouZanOrderService {
+public class YouZanServiceImpl implements YouZanService {
 
     private final YouZanConfig youZanConfig;
 

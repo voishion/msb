@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 class YouZanOrderServiceTest {
 
     @Autowired
-    private YouZanOrderService youZanOrderService;
+    private YouZanService youZanOrderService;
 
     @Test
     void token() {
