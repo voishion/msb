@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage() {
-	echo "Usage: sh deploy.sh [run|mysql|redis|nginx|nacos|sentinel|seata|stopmysql|stopredis|stopnginx|stopnacos|stopsentinel|stopseata|stop|remove]"
+	echo "Usage: sh deploy.sh [run|mysql|redis|nginx|nacos|sentinel|seata|rabbitmq|stopmysql|stopredis|stopnginx|stopnacos|stopsentinel|stopseata|stoprabbitmq|stop|remove]"
 	exit 1
 }
 
@@ -33,6 +33,10 @@ seata(){
   docker-compose up -d --build seata
 }
 
+rabbitmq(){
+  docker-compose up -d --build rabbitmq
+}
+
 stop(){
 	docker-compose stop
 }
@@ -61,6 +65,10 @@ stopseata(){
 	docker-compose stop seata
 }
 
+stoprabbitmq(){
+	docker-compose stop rabbitmq
+}
+
 remove(){
 	docker-compose rm
 }
@@ -87,6 +95,9 @@ case "$1" in
 "seata")
 	seata
 ;;
+"rabbitmq")
+	rabbitmq
+;;
 "stop")
 	stop
 ;;
@@ -105,8 +116,11 @@ case "$1" in
 "stopsentinel")
 	stopsentinel
 ;;
-"seata")
-	seata
+"stopseata")
+	stopseata
+;;
+"stoprabbitmq")
+	stoprabbitmq
 ;;
 "remove")
 	remove

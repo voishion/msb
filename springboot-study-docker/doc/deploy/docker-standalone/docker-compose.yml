@@ -92,6 +92,23 @@ services:
     ports:
       - "6379:6379"
 
+  rabbitmq:
+    image: rabbitmq:3.9.15-management
+    container_name: rabbitmq
+    networks:
+      docker_net:
+        aliases:
+          - rabbitmq
+    volumes:
+      - /Users/voishion/work/server/docker/rabbitmq/log:/var/log/rabbitmq
+      - /Users/voishion/work/server/docker/rabbitmq/data:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=123456
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
   nginx:
     image: nginx:1.21.5
     container_name: nginx
