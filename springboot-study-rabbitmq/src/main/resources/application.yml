@@ -1,0 +1,31 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: root
+    password: 123456
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 1
+    publisher-confirm-type: correlated
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/rabbitmq?serverTimezone=UTC
+    username: root
+    password: abc123
+
+  redis:
+    database: 2
+    host: localhost
+    port: 6379
+    password: redispwd
+
+logging:
+  level:
+    com.meishubao.rabbitmq: debug
+    
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
