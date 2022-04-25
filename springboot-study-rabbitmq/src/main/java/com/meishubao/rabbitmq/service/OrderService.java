@@ -7,4 +7,9 @@ import com.meishubao.rabbitmq.domain.Order;
  * @author lilu
  */
 public interface OrderService extends IService<Order> {
+
+    void selectTest();
+
+    void generateOrder(Long orderId);
+
 }
