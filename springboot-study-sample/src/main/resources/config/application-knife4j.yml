@@ -1,6 +1,7 @@
 knife4j:
   enable: true
   setting:
+    packages: com.meishubao.sample.controller
     enableOpenApi: false
     enableAfterScript: false
     enableGroup: false

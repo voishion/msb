@@ -2,13 +2,13 @@ package com.meishubao.sample.config;
 
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import com.google.common.collect.Sets;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.bind.annotation.RestController;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -39,6 +39,9 @@ public class Knife4jConfig {
     @Value("${spring.profiles.active:default}")
     private String active;
 
+    @Value("${knife4j.setting.packages:com.artworld}")
+    private String packages;
+
     /**
      * 引入Knife4j提供的扩展类
      **/
@@ -57,7 +60,10 @@ public class Knife4jConfig {
                 .apiInfo(apiInfo())
                 .groupName(groupName)
                 .select()
-                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+                //此包路径下的类，才生成接口文档
+                .apis(RequestHandlerSelectors.basePackage(packages))
+                //加了ApiOperation注解的类，才生成接口文档
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
                 .extensions(openApiExtensionResolver.buildExtensions(groupName))

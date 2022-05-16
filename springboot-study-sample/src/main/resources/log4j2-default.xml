@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="30">
     <Properties>
-        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%5p} [%t] %highlight{%-40.40c{1.}} : %M %m%n</Property>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%5p} [%t] %highlight{%-40.40c{1.}} %L : %M %m%n</Property>
     </Properties>
 
     <Appenders>
