@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%5p} [%t] %highlight{%-40.40c{1.}} : %M %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="stdout" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <logger name="org.springframework.context.support" level="WARN"/>
+        <logger name="io.github.resilience4j" level="DEBUG"/>
+        <logger name="springfox.documentation" level="ERROR"/>
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+        <logger name="com.meishubao.sample.service" level="debug"/>
+
+        <Root level="INFO">
+            <AppenderRef ref="stdout"/>
+        </Root>
+    </Loggers>
+</Configuration>
