@@ -1,4 +1,4 @@
-package com.meishubao.sample.util;
+package com.meishubao.sample.utils;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
-public class JsonUtil {
+public class JsonUtils {
 
     private static ObjectMapper OBJECT_MAPPER;
 
@@ -48,7 +48,7 @@ public class JsonUtil {
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    private JsonUtil() {
+    private JsonUtils() {
     }
 
     public static ObjectMapper getInstance() {

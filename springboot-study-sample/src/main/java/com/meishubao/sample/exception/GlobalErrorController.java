@@ -1,7 +1,7 @@
 package com.meishubao.sample.exception;
 
 import com.meishubao.sample.model.R;
-import com.meishubao.sample.util.JsonUtil;
+import com.meishubao.sample.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -34,11 +34,11 @@ public class GlobalErrorController extends AbstractErrorController {
     public R<?> error(HttpServletRequest request) {
         HttpStatus status = getStatus(request);
         if (status == HttpStatus.NO_CONTENT) {
-            log.error(JsonUtil.toJson(new ResponseEntity<>(status)));
+            log.error(JsonUtils.toJson(new ResponseEntity<>(status)));
             return R.create(status.value(), status.getReasonPhrase());
         }
         Map<String, Object> body = getErrorAttributes(request, ErrorAttributeOptions.defaults());
-        log.error(JsonUtil.toJson(new ResponseEntity<>(body, status)));
+        log.error(JsonUtils.toJson(new ResponseEntity<>(body, status)));
 
         return R.failure(status.value(), status.getReasonPhrase());
     }

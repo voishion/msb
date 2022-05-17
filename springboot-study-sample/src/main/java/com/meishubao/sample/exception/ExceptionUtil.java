@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.meishubao.sample.constant.RequestAttributeConstant;
-import com.meishubao.sample.util.JsonUtil;
+import com.meishubao.sample.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +81,7 @@ public class ExceptionUtil {
                 .requestHeaders(requestHeaders)
                 .build();
 
-        return JsonUtil.toJson(dto);
+        return JsonUtils.toJson(dto);
     }
 
     private static String getRequestTime() {
