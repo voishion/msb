@@ -1,14 +1,25 @@
 package com.meishubao.sample.config;
 
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
+import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
+import org.springframework.boot.actuate.endpoint.web.*;
+import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpointsSupplier;
+import org.springframework.boot.actuate.endpoint.web.annotation.ServletEndpointsSupplier;
+import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -23,6 +34,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -90,6 +102,39 @@ public class Knife4jConfig {
                 .defaultValue("Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJ1c2VyIiwic3ViIjoidXNlciIsImlhdCI6MTU4OTI4MjIyNiwiYXVkIjoiVVNFUiIsImV4cCI6MTU5NzkyMjIyNn0.2TvWyvXYLYc3m22w-7PPzVczLSwswBGE_zTCflVWRoD3SQjq8pOEDSGnAMUppV776D3IST8EAL-bktQ-XPnzpQ")
                 .build());
         return globalRequestParameters;
+    }
+
+    /**
+     * https://stackoverflow.com/questions/69108273/spring-boot-swagger-documentation-doesnt-work/69814964
+     */
+    @Bean
+    public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(
+            WebEndpointsSupplier webEndpointsSupplier,
+            ServletEndpointsSupplier servletEndpointsSupplier,
+            ControllerEndpointsSupplier controllerEndpointsSupplier,
+            EndpointMediaTypes endpointMediaTypes,
+            CorsEndpointProperties corsProperties,
+            WebEndpointProperties webEndpointProperties,
+            Environment environment) {
+        List<ExposableEndpoint<?>> allEndpoints = Lists.newLinkedList();
+        Collection<ExposableWebEndpoint> webEndpoints = webEndpointsSupplier.getEndpoints();
+        allEndpoints.addAll(webEndpoints);
+        allEndpoints.addAll(servletEndpointsSupplier.getEndpoints());
+        allEndpoints.addAll(controllerEndpointsSupplier.getEndpoints());
+        String basePath = webEndpointProperties.getBasePath();
+        EndpointMapping endpointMapping = new EndpointMapping(basePath);
+        boolean shouldRegisterLinksMapping = shouldRegisterLinksMapping(webEndpointProperties, environment, basePath);
+        return new WebMvcEndpointHandlerMapping(endpointMapping, webEndpoints, endpointMediaTypes,
+                corsProperties.toCorsConfiguration(), new EndpointLinksResolver(allEndpoints, basePath),
+                shouldRegisterLinksMapping);
+    }
+
+    private boolean shouldRegisterLinksMapping(
+            WebEndpointProperties webEndpointProperties,
+            Environment environment,
+            String basePath) {
+        return webEndpointProperties.getDiscovery().isEnabled() && (StringUtils.hasText(basePath)
+                || ManagementPortType.get(environment).equals(ManagementPortType.DIFFERENT));
     }
 
 }
