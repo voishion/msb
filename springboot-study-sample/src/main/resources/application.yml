@@ -3,3 +3,4 @@ spring:
     active: default
     include:
       - knife4j
+      - mybatis-plus

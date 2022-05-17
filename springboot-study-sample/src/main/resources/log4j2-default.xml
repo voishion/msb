@@ -15,7 +15,8 @@
         <logger name="io.github.resilience4j" level="DEBUG"/>
         <logger name="springfox.documentation" level="ERROR"/>
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
-        <logger name="com.meishubao.sample.service" level="debug"/>
+        <logger name="com.meishubao.sample.service" level="DEBUG"/>
+        <logger name="com.meishubao.sample.mapper" level="DEBUG"/>
 
         <Root level="INFO">
             <AppenderRef ref="stdout"/>
