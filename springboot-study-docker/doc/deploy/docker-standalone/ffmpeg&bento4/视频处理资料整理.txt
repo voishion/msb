@@ -1,0 +1,161 @@
+1、docker pull harbor.meixiu.mobi/library/eclipse-temurin:17.0.2_8-jre-alpine-ffmpeg-bento4
+2、docker run -it --name java_ffmpeg_bento harbor.meixiu.mobi/library/eclipse-temurin:17.0.2_8-jre-alpine-ffmpeg-bento4 /bin/sh
+3、docker cp /Users/liumai/Documents/1111.mp4 6b3743f433dc:/data/
+
+if 720p
+   if 码率>2000
+      ffmpeg -i 1651227290941.mp4 -b:v 2000k -movflags faststart 1145.mp4
+else if 1080p
+   if 码率>4000
+      ffmpeg -i 1651227290941.mp4 -b:v 4000k -movflags faststart 1145.mp4
+else
+     ffmpeg -i 1651227290941.mp4 -movflags faststart -codec copy faststart.mp4
+
+
+//package com.artworld.app.service.video.api.support.thread;
+//
+//import cn.hutool.core.io.FileUtil;
+//import cn.hutool.core.util.RuntimeUtil;
+//import cn.hutool.core.util.StrUtil;
+//import com.artworld.app.service.video.consumer.config.VideoHandlerConfig;
+//import com.artworld.app.service.video.consumer.support.Processor;
+//import com.artworld.app.service.video.consumer.support.bean.ProcessTypeEnum;
+//import com.artworld.app.service.video.consumer.support.thread.UploadFileProcessor;
+//import com.artworld.common.base.util.SpringContextHolder;
+//import com.google.common.base.Stopwatch;
+//import com.google.common.base.Throwables;
+//import lombok.extern.slf4j.Slf4j;
+//import org.bytedeco.javacv.FFmpegFrameGrabber;
+//import org.bytedeco.javacv.FrameGrabber;
+//
+//import java.io.File;
+//import java.nio.charset.StandardCharsets;
+//import java.util.concurrent.CompletableFuture;
+//import java.util.concurrent.ExecutorService;
+//
+///**
+// * 码率转换处理器
+// *
+// * @author lilu
+// */
+//@Slf4j
+//public class DealVideoProcessor extends Processor {
+//
+//    private static final String PATTERN_FAST = VideoHandlerConfig.FFMPEG_ROOT_DIR + "ffmpeg -i {} -movflags faststart -codec copy {}";
+//    private static final String PATTERN_720_2000 = VideoHandlerConfig.FFMPEG_ROOT_DIR + "ffmpeg -i {} -b:v 2000k -movflags faststart {}";
+//    private static final String PATTERN_1080_4000 = VideoHandlerConfig.FFMPEG_ROOT_DIR + "ffmpeg -i {} -b:v 4000k -movflags faststart {}";
+//
+//    private int retryCount = 1;
+//
+//    private String mainFileDownloadPath;
+//    private String dealFileStorePathPrefix;
+//
+//    private final VideoUrl videoUrl;
+//    private final ExecutorService dealVideoExecutor;
+//    private final ExecutorService uploadFileExecutor;
+//
+//    public DealVideoProcessor(VideoUrl videoUrl) {
+//        this.videoUrl = videoUrl;
+//        this.dealVideoExecutor = SpringContextHolder.getBean("dealVideoExecutor");
+//        this.uploadFileExecutor = SpringContextHolder.getBean("uploadFileExecutor");
+//        initCustom();
+//    }
+//
+//    private void initCustom() {
+//        this.mainFileDownloadPath = videoUrl.mainFileDownloadPath();
+//        this.dealFileStorePathPrefix = videoUrl.dealFileStorePathPrefix();
+//    }
+//
+//    @Override
+//    public void run() {
+//        if (check()) {
+//            dealVideo();
+//        } else {
+//            //TODO 钉钉消息通知，重试超过指定次数
+//        }
+//    }
+//
+//    private boolean check() {
+//        return retryCount <= 3;
+//    }
+//
+//    public void dealVideo() {
+//        try {
+//            File mainFile = FileUtil.file(mainFileDownloadPath);
+//            int height = getVideoInfo(mainFile);
+//            int bitrate = getVideoBitrate(mainFile);
+//
+//            String command = null, targetFilePath = null;
+//            if (height == 720 && bitrate > 2000) {
+//                targetFilePath = dealFileStorePathPrefix + "_720.mp4";
+//                command = StrUtil.format(PATTERN_720_2000, mainFileDownloadPath, targetFilePath);
+//            } else if (height == 1080 && bitrate > 4000) {
+//                targetFilePath = dealFileStorePathPrefix + "_1080.mp4";
+//                command = StrUtil.format(PATTERN_1080_4000, mainFileDownloadPath, targetFilePath);
+//            } else {
+//                //targetFilePath = dealFileStorePathPrefix + "_fast.mp4";
+//                //command = String.format(PATTERN_FAST, mainFileDownloadPath, targetFilePath);
+//            }
+//            if (StrUtil.isBlank(command) || StrUtil.isBlank(targetFilePath)) {
+//                log.info("不需要码率转换，文件[{}]", mainFileDownloadPath);
+//                return;
+//            }
+//
+//            Stopwatch stopwatch = Stopwatch.createStarted();
+//            RuntimeUtil.execForStr(StandardCharsets.UTF_8, command);
+//            boolean found = FileUtil.file(targetFilePath).exists();
+//            if (!found) {
+//                this.retryCount++;
+//                CompletableFuture.runAsync(this, dealVideoExecutor);
+//            }
+//            log.info("码率转换[{}]结束，上传结果:{}，targetFilePath:[{}]，耗时:{}", mainFileDownloadPath, found, targetFilePath, stopwatch);
+//            if (found) {
+//                CompletableFuture.runAsync(new UploadFileProcessor(targetFilePath, videoUrl, ProcessTypeEnum.DEAL_VIDEO), uploadFileExecutor);
+//            }
+//        } catch (Exception e) {
+//            log.error("切割文件[{}]异常，主文件[{}]，{}", dealFileStorePathPrefix, mainFileDownloadPath, Throwables.getStackTraceAsString(e));
+//            //TODO 钉钉消息通知
+//        }
+//    }
+//
+//    /**
+//     * 获取视频详情
+//     *
+//     * @param video 视频
+//     * @return
+//     */
+//    private int getVideoInfo(File video) {
+//        int height = 720;
+//        FFmpegFrameGrabber ff = new FFmpegFrameGrabber(video);
+//        try {
+//            ff.start();
+//            if (ff.getImageHeight() == 1080 && ff.getImageWidth() == 1920) {
+//                height = 1080;
+//            }
+//            ff.stop();
+//        } catch (FrameGrabber.Exception e) {
+//            e.printStackTrace();
+//        }
+//        return height;
+//    }
+//
+//    private int getVideoBitrate(File video) {
+//        int height = 0;
+//        FFmpegFrameGrabber ff = new FFmpegFrameGrabber(video);
+//        try {
+//            ff.start();
+//            ff.stop();
+//            return ff.getVideoBitrate() / 1024;
+//        } catch (FrameGrabber.Exception e) {
+//            e.printStackTrace();
+//        }
+//        return height;
+//    }
+//
+//}
+
+<dependency>
+    <groupId>org.bytedeco</groupId>
+    <artifactId>javacv-platform</artifactId>
+    <version>1.5.7</version>
+</dependency>
