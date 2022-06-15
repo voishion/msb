@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage() {
-	echo "Usage: sh deploy.sh [run|mysql|redis|nginx|nacos|sentinel|seata|rabbitmq|stopmysql|stopredis|stopnginx|stopnacos|stopsentinel|stopseata|stoprabbitmq|stop|remove]"
+	echo "Usage: sh deploy.sh [run|mysql|db2|redis|nginx|nacos|sentinel|seata|rabbitmq|stopmysql|stopdb2|stopredis|stopnginx|stopnacos|stopsentinel|stopseata|stoprabbitmq|stop|remove]"
 	exit 1
 }
 
@@ -11,6 +11,10 @@ run(){
 
 mysql(){
   docker-compose up -d --build mysql
+}
+
+db2(){
+  docker-compose up -d --build db2
 }
 
 redis(){
@@ -43,6 +47,10 @@ stop(){
 
 stopmysql(){
 	docker-compose stop mysql
+}
+
+stopdb2(){
+	docker-compose stop db2
 }
 
 stopredis(){
@@ -80,6 +88,9 @@ case "$1" in
 "mysql")
 	mysql
 ;;
+"db2")
+	db2
+;;
 "redis")
 	redis
 ;;
@@ -103,6 +114,9 @@ case "$1" in
 ;;
 "stopmysql")
 	stopmysql
+;;
+"stopdb2")
+	stopdb2
 ;;
 "stopredis")
 	stopredis

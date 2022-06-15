@@ -28,6 +28,24 @@ services:
     ports:
       - "3306:3306"
 
+  db2:
+    image: ibmcom/db2:11.5.7.0
+    container_name: db2
+    networks:
+      docker_net:
+        aliases:
+          - db2
+    privileged: true
+    environment:
+      LICENSE: accept
+      DB2INST1_PASSWORD: abc123
+      DBNAME: TESTDB
+      ENABLE_ORACLE_COMPATIBILITY: "true"
+    volumes:
+      - /Users/voishion/work/server/docker/db2/data:/db2data
+    ports:
+      - "50000:50000"
+
   nacos:
     image: nacos/nacos-server:2.0.3
     container_name: nacos
