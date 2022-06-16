@@ -42,7 +42,9 @@ services:
       DBNAME: TESTDB
       ENABLE_ORACLE_COMPATIBILITY: "true"
     volumes:
-      - /Users/voishion/work/server/docker/db2/data:/db2data
+      - /Users/voishion/work/server/docker/db2/hadr:/hadr
+      - /Users/voishion/work/server/docker/db2/db2data:/db2data
+      - /Users/voishion/work/server/docker/db2/database:/database
     ports:
       - "50000:50000"
 
