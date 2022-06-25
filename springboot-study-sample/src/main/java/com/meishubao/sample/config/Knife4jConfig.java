@@ -62,7 +62,7 @@ public class Knife4jConfig {
     /**
      * 设置显示的swagger环境信息
      **/
-    private final Set<String> profiles = Sets.newHashSet("default", "dev", "test");
+    private final Set<String> profiles = Sets.newHashSet("local", "default", "dev", "test");
 
     @Bean
     public Docket createRestApi() {
