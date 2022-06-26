@@ -17,8 +17,8 @@ class UserServiceTest {
     @Test
     void batchInsert() {
         List<User> list = new ArrayList<>();
-        list.add(User.builder().name("zhangsan").age(23).email("zhangsan@fox.com").build());
-        list.add(User.builder().name("lisi").age(32).email("lisi@fox.com").build());
+        list.add(User.builder().name("Zhaosi").password("123456").age(43).email("zhaosi@fox.com").build());
+        list.add(User.builder().name("Liuneng").password("123456").age(42).email("liuneng@fox.com").build());
         int rows = userService.batchInsert(list);
         System.out.println(rows);
         list.forEach(System.out::println);

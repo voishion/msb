@@ -4,10 +4,10 @@
 
     <insert id="batchInsert" parameterType="com.meishubao.sample.model.entity.User">
         INSERT INTO sys_user (
-            name, age, email
+            name, password, age, email
         ) VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            ( #{item.name}, #{item.age}, #{item.email} )
+            ( #{item.name}, #{item.password}, #{item.age}, #{item.email} )
         </foreach>
     </insert>
 
