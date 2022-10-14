@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage() {
-	echo "Usage: sh deploy.sh [run|mysql|db2|redis|nginx|nacos|sentinel|seata|rabbitmq|stopmysql|stopdb2|stopredis|stopnginx|stopnacos|stopsentinel|stopseata|stoprabbitmq|stop|remove]"
+	echo "Usage: sh deploy.sh [run|mysql|db2|redis|nginx|nacos|sentinel|seata|rabbitmq|xxljobadmin|stopmysql|stopdb2|stopredis|stopnginx|stopnacos|stopsentinel|stopseata|stoprabbitmq|stopxxljobadmin|stop|remove]"
 	exit 1
 }
 
@@ -41,6 +41,10 @@ rabbitmq(){
   docker-compose up -d --build rabbitmq
 }
 
+xxljobadmin(){
+  docker-compose up -d --build xxl-job-admin
+}
+
 stop(){
 	docker-compose stop
 }
@@ -77,6 +81,10 @@ stoprabbitmq(){
 	docker-compose stop rabbitmq
 }
 
+stopxxljobadmin(){
+	docker-compose stop xxl-job-admin
+}
+
 remove(){
 	docker-compose rm
 }
@@ -109,6 +117,9 @@ case "$1" in
 "rabbitmq")
 	rabbitmq
 ;;
+"xxljobadmin")
+	xxljobadmin
+;;
 "stop")
 	stop
 ;;
@@ -135,6 +146,9 @@ case "$1" in
 ;;
 "stoprabbitmq")
 	stoprabbitmq
+;;
+"stopxxljobadmin")
+	stopxxljobadmin
 ;;
 "remove")
 	remove

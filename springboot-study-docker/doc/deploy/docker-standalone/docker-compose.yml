@@ -148,6 +148,20 @@ services:
       - "37950:37950"
       - "37951:37951"
 
+  xxl-job-admin:
+    image: xuxueli/xxl-job-admin:2.3.1
+    container_name: xxl-job-admin
+    networks:
+      docker_net:
+        aliases:
+          - xxl-job
+    environment:
+      PARAMS: "--spring.datasource.url=jdbc:mysql://mysql:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai --spring.datasource.username=root --spring.datasource.password=abc123"
+    ports:
+      - "9999:8080"
+    volumes:
+      - /Users/voishion/work/server/docker/xxl-job-admin/logs:/data/applogs/xxl-job
+
 networks:
   docker_net:
     driver: bridge
