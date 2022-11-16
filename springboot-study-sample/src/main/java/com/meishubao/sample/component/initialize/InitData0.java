@@ -1,5 +1,6 @@
 package com.meishubao.sample.component.initialize;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -14,13 +15,14 @@ import org.springframework.stereotype.Component;
  *
  * 3：如果调用afterPropertiesSet方法时出错，则不调用init-method指定的方法。
  */
+@Slf4j
 @Order(1)
 @Component
 public class InitData0 implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        System.out.println("init");
+        log.warn("{}...", this.getClass().getName());
     }
 
 }
