@@ -51,7 +51,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         /* 3.将订单存入信息Redis */
         RedisUtils.setObject(StrUtil.format(RabbitTemplateConfig.ORDER_KEY, orderId), order);
         /* 4.向RabbitMQ异步投递消息 */
-        rabbitTemplate.convertAndSend(RabbitmqConfig.DELAY_EXCHANGE_NAME, RabbitmqConfig.DELAY_KEY, order, RabbitUtils.setDelay((int) TimeUnit.MINUTES.toMillis(3)), RabbitUtils.correlationData(order.getOrderId()));
+        rabbitTemplate.convertAndSend(RabbitmqConfig.DELAY_EXCHANGE_NAME, RabbitmqConfig.DELAY_KEY, order,
+                RabbitUtils.setDelay((int) TimeUnit.MINUTES.toMillis(3)),
+                RabbitUtils.correlationData(order.getOrderId()));
     }
 
     private Order createOrder(long i) {
