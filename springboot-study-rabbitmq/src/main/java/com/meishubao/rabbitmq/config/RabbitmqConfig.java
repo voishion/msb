@@ -16,10 +16,19 @@ import java.util.Map;
 @Configuration
 public class RabbitmqConfig {
 
+    /**
+     * 延迟队列路由KEY
+     */
     public static final String DELAY_KEY = "meishubao.delay.key";
 
+    /**
+     * 延迟队列名称
+     */
     public static final String DELAY_QUEUE_NAME = "meishubao.delay.queue";
 
+    /**
+     * 延迟交换器名称
+     */
     public static final String DELAY_EXCHANGE_NAME = "meishubao.delay.exchange";
 
     /**
