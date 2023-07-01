@@ -7,6 +7,8 @@ package com.meishubao.sample.service;
  */
 public interface ServiceConstant {
 
-    String SAVE_USER_NAME = "XieGuangkun";
+    String SAVE_USER_NAME0 = "XieGuangkun";
+
+    String SAVE_USER_NAME1 = "WangLaoQi";
 
 }

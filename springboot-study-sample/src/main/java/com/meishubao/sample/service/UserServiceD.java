@@ -7,4 +7,5 @@ public interface UserServiceD extends IService<User> {
 
     void saveUser(User user);
 
+    void saveUser1(User user);
 }

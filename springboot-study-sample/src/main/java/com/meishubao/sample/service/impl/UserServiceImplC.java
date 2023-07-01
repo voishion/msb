@@ -7,6 +7,7 @@ import com.meishubao.sample.service.ServiceConstant;
 import com.meishubao.sample.service.UserServiceC;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -22,7 +23,7 @@ public class UserServiceImplC extends ServiceImpl<UserMapper, User> implements U
     //@Transactional(noRollbackFor = RuntimeException.class)
     public void saveUser(User user) {
         user.setId(null);
-        user.setName(ServiceConstant.SAVE_USER_NAME + "C");
+        user.setName(ServiceConstant.SAVE_USER_NAME0 + "C");
         this.save(user);
         try {
             userServiceImplD.saveUser(user);
@@ -30,6 +31,21 @@ public class UserServiceImplC extends ServiceImpl<UserMapper, User> implements U
             e.printStackTrace();
         }
         //throw new RuntimeException("DB异常");
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.NESTED)
+    public void saveUser1(User user) {
+        user.setId(null);
+        user.setName(ServiceConstant.SAVE_USER_NAME1 + "C");
+        this.save(user);
+        userServiceImplD.saveUser1(user);
+        //try {
+        //    userServiceImplD.saveUser1(user);
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //}
+        throw new RuntimeException("DB异常");
     }
 
 }

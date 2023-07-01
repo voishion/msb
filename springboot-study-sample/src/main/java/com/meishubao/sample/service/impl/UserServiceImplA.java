@@ -19,9 +19,18 @@ public class UserServiceImplA extends ServiceImpl<UserMapper, User> implements U
     @Transactional
     public void saveUser(User user) {
         user.setId(null);
-        user.setName(ServiceConstant.SAVE_USER_NAME + "A");
+        user.setName(ServiceConstant.SAVE_USER_NAME0 + "A");
         this.save(user);
         userServiceImplB.saveUser(user);
+    }
+
+    @Override
+    @Transactional
+    public void saveUser1(User user) {
+        user.setId(null);
+        user.setName(ServiceConstant.SAVE_USER_NAME1 + "A");
+        this.save(user);
+        userServiceImplB.saveUser1(user);
     }
 
 }

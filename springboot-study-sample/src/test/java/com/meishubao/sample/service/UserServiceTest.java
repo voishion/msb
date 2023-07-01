@@ -1,6 +1,7 @@
 package com.meishubao.sample.service;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.meishubao.sample.model.entity.User;
@@ -44,17 +45,6 @@ class UserServiceTest {
         list.forEach(System.out::println);
     }
 
-    @Test
-    void saveUser() {
-        String email = "xieGuangkun@fox.com";
-        saveUserBefore(email);
-
-        User user = User.builder().name(ServiceConstant.SAVE_USER_NAME).password("123456").age(43).email(email).build();
-        userServiceA.saveUser(user);
-
-        saveUserAfter(email);
-    }
-
     private void saveUserBefore(String email) {
         LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(User::getEmail, email);
@@ -72,6 +62,34 @@ class UserServiceTest {
             System.out.println("user size:" + list.size());
             list.forEach(x -> System.out.println(x.toString()));
         }
+    }
+
+    /**
+     * 测试Propagation：required、requires_new
+     */
+    @Test
+    void saveUser() {
+        String email = StrUtil.format("{}@fox.com", ServiceConstant.SAVE_USER_NAME0);
+        saveUserBefore(email);
+
+        User user = User.builder().name(ServiceConstant.SAVE_USER_NAME0).password("123456").age(43).email(email).build();
+        userServiceA.saveUser(user);
+
+        saveUserAfter(email);
+    }
+
+    /**
+     * 测试Propagation：supports、mandatory、not_supported、never、nested
+     */
+    @Test
+    void saveUser1() {
+        String email = StrUtil.format("{}@fox.com", ServiceConstant.SAVE_USER_NAME1);
+        saveUserBefore(email);
+
+        User user = User.builder().name(ServiceConstant.SAVE_USER_NAME1).password("123456").age(43).email(email).build();
+        userServiceA.saveUser1(user);
+
+        saveUserAfter(email);
     }
 
 }
