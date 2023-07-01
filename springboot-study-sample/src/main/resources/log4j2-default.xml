@@ -12,6 +12,7 @@
 
     <Loggers>
         <logger name="org.springframework.context.support" level="WARN"/>
+        <logger name="org.springframework.jdbc.support.JdbcTransactionManager" level="TRACE"/>
         <logger name="io.github.resilience4j" level="DEBUG"/>
         <logger name="springfox.documentation" level="ERROR"/>
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
