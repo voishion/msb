@@ -9,17 +9,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+
 @Service
 public class UserServiceImplD extends ServiceImpl<UserMapper, User> implements UserServiceD {
 
     @Override
-    //@Transactional
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveUser(User user) {
+    @Transactional
+    //@Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveUser(User user) throws IOException {
         user.setId(null);
         user.setName(ServiceConstant.SAVE_USER_NAME0 + "D");
         this.save(user);
+        // 会回滚事务
         throw new RuntimeException("DB异常D");
+        // 不会回滚事务
+        //throw new IOException("DB异常D");
     }
 
     @Override
