@@ -24,8 +24,12 @@ public class UserServiceImplC extends ServiceImpl<UserMapper, User> implements U
         user.setId(null);
         user.setName(ServiceConstant.SAVE_USER_NAME + "C");
         this.save(user);
-        userServiceImplD.saveUser(user);
-        throw new RuntimeException("DB异常");
+        try {
+            userServiceImplD.saveUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //throw new RuntimeException("DB异常");
     }
 
 }
