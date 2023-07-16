@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="2023-07-16-1" author="lilu">
+        <createTable tableName="tb_device" remarks="设备表">
+            <column name="id" type="bigint" autoIncrement="true" remarks="主键">
+                <constraints primaryKey="true" primaryKeyName="pk_tb_device_id" nullable="false"/>
+            </column>
+            <column name="sn" type="varchar(50)" remarks="设备SN">
+                <constraints unique="true" uniqueConstraintName="uniq_tb_device_sn" nullable="false"/>
+            </column>
+            <column name="type_id" type="bigint" remarks="类型ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="bigint" remarks="状态ID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ext_field" type="text" remarks="扩展字段">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="tb_device" indexName="idx_tb_device_type_id_status_id">
+            <column name="type_id"/>
+            <column name="status_id"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
