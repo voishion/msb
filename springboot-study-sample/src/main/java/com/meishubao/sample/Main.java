@@ -15,6 +15,8 @@ import java.math.RoundingMode;
 public class Main {
 
     public static void main(String[] args) {
+        //String str = StrUtil.format("WW{}SS", "李露");
+        //System.out.println(str);
         DateTime start = DateTime.parse("2022-10-13 07:24:01", DateTimeFormat.forPattern(DatePattern.NORM_DATETIME_PATTERN)),
                    end = DateTime.parse("2022-10-13 18:09:36", DateTimeFormat.forPattern(DatePattern.NORM_DATETIME_PATTERN));
         int days = Days.daysBetween(start, end).getDays();
