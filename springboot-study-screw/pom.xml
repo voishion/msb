@@ -73,11 +73,11 @@
                     <!--driver-->
                     <driverClassName>com.mysql.cj.jdbc.Driver</driverClassName>
                     <!--jdbc url-->
-                    <jdbcUrl>jdbc:mysql://10.152.160.66:59967/wenku</jdbcUrl>
+                    <jdbcUrl>jdbc:mysql://127.0.0.1:3306/wenku</jdbcUrl>
                     <!--username-->
-                    <username>db_admin</username>
+                    <username>root</username>
                     <!--password-->
-                    <password>mKw=5RunIRyM</password>
+                    <password>123456</password>
                     <!--生成文件类型-->
                     <fileType>HTML</fileType>
                     <!--打开文件输出目录-->
