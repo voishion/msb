@@ -11,6 +11,7 @@
     <modules>
         <module>springboot-study-docker</module>
         <module>springboot-study-admin</module>
+        <module>starter</module>
     </modules>
 
     <properties>
