@@ -93,6 +93,7 @@
                     <version>230815</version>
                     <!--标题-->
                     <title>通用文库数据库文档</title>
+                    <!--指定生成表名-->
                     <designatedTableName>t_role,t_role_user,t_user_group,t_user_group_member,temp,user,user_duty,notify_record,organization,sys_access_records</designatedTableName>
                     <!--指定生成表前缀-->
                     <designatedTablePrefix>document_</designatedTablePrefix>
