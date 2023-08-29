@@ -25,7 +25,7 @@ import java.util.List;
  * @since 2023-08-28
  */
 @RestController
-@Api("账户表接口")
+@Api(tags = "账户表接口")
 @RequestMapping("/account")
 public class AccountController {
 

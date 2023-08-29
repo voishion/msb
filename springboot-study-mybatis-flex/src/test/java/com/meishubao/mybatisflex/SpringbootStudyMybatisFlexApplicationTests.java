@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.meishubao.mybatisflex.domain.entity.tables.AccountTableDef.Account;
+import static com.meishubao.mybatisflex.domain.entity.table.AccountTableDef.Account;
+
 
 @SpringBootTest
 class SpringbootStudyMybatisFlexApplicationTests {
