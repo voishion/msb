@@ -73,6 +73,14 @@ public class OptionalDemo {
 //        System.out.println(address1);
 
         System.out.println(getStreet(Optional.of(user), 50));
+
+        User userTemp1 = null;
+        System.out.println(Optional.ofNullable(userTemp1).orElse(user).getUsername());
+        System.out.println(Optional.ofNullable(userTemp1).orElseGet(() -> {
+            User u = new User();
+            u.setUsername("biezhi");
+            return u;
+        }).getUsername());
     }
 
     public static String getStreet(Optional<User> user, int minAge) {
