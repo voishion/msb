@@ -4,3 +4,7 @@ spring:
     username: root
     password: abc123
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-flex:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
