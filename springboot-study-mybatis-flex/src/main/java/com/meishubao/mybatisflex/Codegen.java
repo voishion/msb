@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.EntityConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
-import com.mybatisflex.codegen.config.TableDefConfig;
 import com.mybatisflex.core.BaseMapper;
 import com.mybatisflex.core.service.IService;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
@@ -65,9 +64,22 @@ public class Codegen {
 
         // 策略配置
         globalConfig.getStrategyConfig()
+                .setVersionColumn("version")
+                .setLogicDeleteColumn("deleted")
                 .setTablePrefix("tb_", "t_", "sys_")
                 .setGenerateTable("tb_account", "tb_device");
 
+        // 模板配置
+        globalConfig.getTemplateConfig()
+                .setEntity("/templates/kitty/entity.tpl")
+                .setMapper("/templates/kitty/mapper.tpl")
+                .setService("/templates/kitty/service.tpl")
+                .setServiceImpl("/templates/kitty/serviceImpl.tpl")
+                .setController("/templates/kitty/controller.tpl")
+                .setTableDef("/templates/kitty/tableDef.tpl")
+                .setMapperXml("/templates/kitty/mapperXml.tpl")
+        ;
+        System.out.println(globalConfig.getTemplateConfig().getEntity());
 
         // Entity 生成配置
         globalConfig.setEntityGenerateEnable(true);
@@ -76,12 +88,6 @@ public class Codegen {
                 .setWithLombok(true)
                 .setWithSwagger(true)
                 .setSwaggerVersion(EntityConfig.SwaggerVersion.FOX);
-
-        // TableDef 生成配置
-        globalConfig.setTableDefGenerateEnable(true);
-        globalConfig.getTableDefConfig()
-                .setOverwriteEnable(true)
-                .setPropertiesNameStyle(TableDefConfig.NameStyle.UPPER_CAMEL_CASE);
 
         // Mapper 生成配置
         globalConfig.setMapperGenerateEnable(true);
