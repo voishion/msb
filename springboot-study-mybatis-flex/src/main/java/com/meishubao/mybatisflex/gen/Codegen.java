@@ -1,4 +1,4 @@
-package com.meishubao.mybatisflex;
+package com.meishubao.mybatisflex.gen;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
