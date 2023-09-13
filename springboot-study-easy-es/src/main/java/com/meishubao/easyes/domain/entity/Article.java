@@ -31,7 +31,7 @@ public class Article {
     /**
      * 文章标题
      */
-    @IndexField(fieldType = FieldType.TEXT, analyzer = Analyzer.IK_SMART, searchAnalyzer = Analyzer.IK_MAX_WORD)
+    @IndexField(fieldType = FieldType.TEXT, analyzer = Analyzer.STANDARD, searchAnalyzer = Analyzer.STANDARD)
     private String titleEn;
     /**
      * 文章内容,指定了类型及存储/查询分词器

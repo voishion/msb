@@ -5,6 +5,7 @@ import com.meishubao.easyes.domain.entity.Article;
 import com.meishubao.easyes.mapper.ArticleMapper;
 import lombok.RequiredArgsConstructor;
 import org.dromara.easyes.core.conditions.select.LambdaEsQueryWrapper;
+import org.dromara.easyes.core.toolkit.FieldUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,11 +62,16 @@ public class ArticleController {
         // 用户可以通过模糊检索,例如输入 Calcium 或 葡萄糖 或 putaotang时对应药品均可以被检索到
         LambdaEsQueryWrapper<Article> wrapper = new LambdaEsQueryWrapper<>();
         wrapper.match(Article::getTitleEn, keyword)
-                .or().match("title.zh", keyword)
-                .or().match("title.pinyin", keyword)
+                .or().match(FieldUtils.val(Article::getTitle) + ".zh", keyword)
+                .or().match(FieldUtils.val(Article::getTitle) + ".pinyin", keyword)
                 .or().match(Article::getContent, keyword)
                 .or().match(Article::getAuthor, keyword)
         ;
+
+        // 获取DSL语句
+        String source = articleMapper.getSource(wrapper);
+        System.out.println(source);
+
         return articleMapper.selectList(wrapper);
     }
 

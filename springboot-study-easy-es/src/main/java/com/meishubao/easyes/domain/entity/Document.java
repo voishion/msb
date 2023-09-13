@@ -3,6 +3,7 @@ package com.meishubao.easyes.domain.entity;
 import lombok.Data;
 import org.dromara.easyes.annotation.*;
 import org.dromara.easyes.annotation.rely.Analyzer;
+import org.dromara.easyes.annotation.rely.FieldStrategy;
 import org.dromara.easyes.annotation.rely.FieldType;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,11 @@ public class Document {
     @IndexField
     private String title;
     /**
+     * 作者 加@TableField注解,并指明strategy = FieldStrategy.NOT_EMPTY 表示更新的时候的策略为 创建者不为空字符串时才更新
+     */
+    @IndexField(strategy = FieldStrategy.NOT_EMPTY, fieldType = FieldType.TEXT, analyzer = Analyzer.IK_SMART, searchAnalyzer = Analyzer.IK_MAX_WORD)
+    private String author;
+    /**
      * 文档内容
      */
     private String content;
@@ -29,6 +35,14 @@ public class Document {
      * 文档数量
      */
     private Integer docNumber;
+    /**
+     * 大小
+     */
+    private Integer size;
+    /**
+     * 年龄
+     */
+    private Integer age;
     /**
      * 复合字段,此注解和SpringData中的MultiField用法类似 适用于对同一个字段通过多种分词器检索的场景
      * // 药品 中文名叫葡萄糖酸钙口服溶液 英文名叫 Calcium Gluconate 汉语拼音为 putaotangsuangaikoufurongye
@@ -45,7 +59,7 @@ public class Document {
      * 复合字段英文
      */
     @HighLight(mappingField="highlightMultiFieldEn")
-    @IndexField(fieldType = FieldType.TEXT, analyzer = Analyzer.IK_SMART, searchAnalyzer = Analyzer.IK_MAX_WORD)
+    @IndexField(fieldType = FieldType.TEXT, analyzer = Analyzer.STANDARD, searchAnalyzer = Analyzer.STANDARD)
     private String multiFieldEn;
     /**
      * 复合字段英文高亮返回值被映射的字段

@@ -3,6 +3,8 @@ easy-es:
   # es连接地址+端口 格式必须为ip:port,如果是集群则可用逗号隔开
   address : localhost:9200
   global-config:
+    #smoothly:平滑模式, not_smoothly:非平滑模式, manual:手动模式
+    process_index_mode: smoothly
     db-config:
       # 是否开启下划线转驼峰 默认为false
       map-underscore-to-camel-case: true
