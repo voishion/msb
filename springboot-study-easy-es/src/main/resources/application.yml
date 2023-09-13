@@ -1,0 +1,16 @@
+easy-es:
+  enable: true
+  # es连接地址+端口 格式必须为ip:port,如果是集群则可用逗号隔开
+  address : localhost:9200
+  global-config:
+    db-config:
+      # 是否开启下划线转驼峰 默认为false
+      map-underscore-to-camel-case: true
+      # 索引前缀,可用于区分环境  默认为空 用法和MP的tablePrefix一样的作用和用法
+      index-prefix: study_ee_dev_
+
+logging:
+  level:
+    # 开启trace级别日志,在开发时可以开启此配置,则控制台可以打印es全部请求信息及DSL语句,为了避免重复,开启此项配置后,可以将EE的print-dsl设置为false.
+    tracer: trace
+
