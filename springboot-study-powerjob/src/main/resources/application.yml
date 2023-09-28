@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: springboot-study-powerjob
+
+powerjob:
+  worker:
+    app-name: ${spring.application.name}
+    port: 27777
+    server-address: 127.0.0.1:7700
+    protocol: http

@@ -1,11 +1,21 @@
 package com.meishubao.java8.util;
 
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.*;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.SmUtil;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.SM2;
 import org.w3c.dom.Document;
 
 import javax.xml.xpath.XPathConstants;
+import java.math.BigDecimal;
+import java.security.KeyPair;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author lilu
@@ -14,7 +24,54 @@ public class HutoolTest {
 
     public static void main(String[] args) {
         //dateUtilTest();
-        xmlUtilTest();
+        //xmlUtilTest();
+        //sm2Test();
+        //convertTest();
+        convertTest1();
+    }
+
+    public static void convertTest1() {
+        BigDecimal before = new BigDecimal("6429.12").add(new BigDecimal("1797.31"));
+        //BigDecimal after = new BigDecimal("6035.83").add(new BigDecimal("2141.85"));
+        BigDecimal after = new BigDecimal("6035.83").add(new BigDecimal("1797.31").subtract(new BigDecimal("150.79")));
+        System.out.println(before);
+        System.out.println(after);
+        System.out.println(before.subtract(after));
+
+        System.out.println(new BigDecimal("2292.64").subtract(new BigDecimal("2141.85")));
+    }
+
+    public static void convertTest() {
+        long time = 4535345;
+        long minutes = Convert.convertTime(time, TimeUnit.MILLISECONDS, TimeUnit.MINUTES);
+        System.out.println(StrUtil.format("时间单位转换=>{}毫秒={}分钟", time, minutes));
+
+        double money = 67556.32;
+        String digitUppercase = Convert.digitToChinese(money);
+        System.out.println(StrUtil.format("金额大小写转换=>{}元={}", money, digitUppercase));
+    }
+
+    private static void sm2Test() {
+        String text = "你好啊，！@#￥%……&15327sdfghjQWERTYJK23453456789！@#￥%……&*（1234567!@#$%^&*(";
+
+        KeyPair pair = SecureUtil.generateKeyPair("SM2");
+        String privateKey = Base64.encode(pair.getPrivate().getEncoded());
+        String publicKey = Base64.encode(pair.getPublic().getEncoded());
+        System.out.println("privateKey=>\n" + privateKey);
+        System.out.println("publicKey=>\n" + publicKey);
+
+        SM2 encryptSm2 = SmUtil.sm2(null, publicKey);
+        // 公钥加密
+        String encryptStr = Base64.encode(encryptSm2.encrypt(text, KeyType.PublicKey));
+        System.out.println("encryptStr=>\n" + encryptStr);
+
+        // 私钥解密
+        SM2 decryptSm2 = SmUtil.sm2(privateKey, null);
+        String decryptStr = decryptSm2.decryptStr(encryptStr, KeyType.PrivateKey);
+        System.out.println("decryptStr=>\n" + decryptStr);
+
+        // 结果
+        System.out.println("result=>" + text.equals(decryptStr));
     }
 
     private static void xmlUtilTest() {
