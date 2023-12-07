@@ -24,13 +24,16 @@ public class Codegen {
 
         // 配置数据源
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/springboot_study_sample");
-        dataSource.setUsername("root");
-        dataSource.setPassword("abc123");
+        //dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/springboot_study_sample");
+        //dataSource.setUsername("root");
+        //dataSource.setPassword("abc123");
+        dataSource.setJdbcUrl("jdbc:mysql://10.152.160.66:59967/chat");
+        dataSource.setUsername("db_admin");
+        dataSource.setPassword("mKw=5RunIRyM");
 
         // 创建配置内容，两种风格都可以。
         String projectDir = StrUtil.format("{}/{}", new File("").getAbsoluteFile(), applicationName);
-        String basePackage = Codegen.class.getPackage().getName();
+        String basePackage = "cn.gt.aigc";
         GlobalConfig globalConfig = createGlobalConfigUseStyle(projectDir, basePackage);
 
         // 通过 datasource 和 globalConfig 创建代码生成器
@@ -67,7 +70,8 @@ public class Codegen {
                 .setVersionColumn("version")
                 .setLogicDeleteColumn("deleted")
                 .setTablePrefix("tb_", "t_", "sys_")
-                .setGenerateTable("tb_account", "tb_device");
+                .setGenerateTable("chatcheck", "chatrecord", "chatrecord_log", "chatsession", "deletechatrecord", "gtuser", "userlogin", "userlogin_mem")
+                ;
 
         // 模板配置
         globalConfig.getTemplateConfig()
